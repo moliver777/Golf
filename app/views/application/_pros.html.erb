@@ -1,7 +1,10 @@
 <table>
 	<tr>
-		<th></th>
-		<th>NAME</th>
+		<th class="title" colspan="4">PRO LEADERBOARD</th>
+	</tr>
+	<tr>
+		<th class="small"></th>
+		<th class="big">NAME</th>
 		<th>SCORE</th>
 		<th>+/-</th>
 	</tr>
@@ -34,8 +37,11 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		$("div#content table").fadeIn();
 		setTimeout(function() {
-			$("div#content").load("/get_teams");
+			$("div#content table").fadeOut(function() {
+				$("div#content").load("/get_teams");
+			});
 		},<%= @interval %>);
 	});
 </script>
