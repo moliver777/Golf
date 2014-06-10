@@ -14,7 +14,7 @@
 				<% if pro.score == @prev_score %>
 					<td>T<%= @prev_position %></td>
 				<% else %>
-					<% if pro.score == @pros[i+1].score %>
+					<% if @pros[i+1] && pro.score == @pros[i+1].score %>
 						<td>T<%= i+1 %></td>
 					<% else %>
 						<td><%= i+1 %></td>

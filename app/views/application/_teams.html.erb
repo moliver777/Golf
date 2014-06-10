@@ -14,7 +14,7 @@
 				<% if team.score == @prev_score %>
 					<td>T<%= @prev_position %></td>
 				<% else %>
-					<% if team.score == @teams[i+1].score %>
+					<% if @teams[i+1] && team.score == @teams[i+1].score %>
 						<td>T<%= i+1 %></td>
 					<% else %>
 						<td><%= i+1 %></td>
