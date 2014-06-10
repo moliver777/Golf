@@ -6,7 +6,7 @@
 		<th class="small"></th>
 		<th class="big">NAME</th>
 		<th>SCORE</th>
-		<th>+/-</th>
+		<th>+/- <span style="font-size:14px;position:relative;bottom:2px;">(par <%= @pro_par %>)</span></th>
 	</tr>
 	<% @pros.each_with_index do |pro,i| %>
 		<tr>
@@ -26,10 +26,10 @@
 				<td><%= pro.score %></td>
 				<td><%= pro.score-@pro_par %></td>
 			<% else %>
-				<td>TBC</td>
+				<td>-</td>
 				<td><%= pro.name %></td>
-				<td>TBC</td>
-				<td>TBC</td>
+				<td>-</td>
+				<td>-</td>
 			<% end %>
 		</tr>
 	<% end %>
