@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<%= stylesheet_link_tag 'admin' %>
+</head>
+<body>
+
+	
+	<!-- Header -->
+	<div id="header">
+		<div class="shell">
+			
+			<div id="head">
+				<h1><a href="#">Weybrook Park team-Am Admin</a></h1>
+				<div class="right" style="display:none;">
+					<p>
+						Welcome <a href="#"><strong>Administrator</strong></a> | 
+						<a href="#">Help</a> |
+						<a href="#">teamfile Settings</a> |
+						<a href="#">Logout</a>
+					</p>
+				</div>
+			</div>
+			
+			<!-- Navigation -->
+			<div id="navigation">
+				<ul>
+				    <li><a href="/admin/pros"><span>Pro Management</span></a></li>
+					<li><a href="/admin/teams" class="active"><span>Team Management</span></a></li>
+				    <li><a href="/"><span>View Leaderboard</span></a></li>
+				</ul>
+			</div>
+			<!-- End Navigation -->
+			
+		</div>
+	</div>
+	<!-- End Header -->
+	
+	
+	
+	<!-- Content -->
+	<div id="content" class="shell">
+		
+		<!-- Help Navigation -->
+		<div id="help-nav">
+			<a href="/admin">Dashboard</a> &gt; Team Management
+		</div>
+		<!-- End Help Navigation -->
+		
+		<h1 style="width:200px;float:left;padding-bottom:45px;">Team Management</h1>
+		<div class="message thank-message" style="display:none;">
+			<p><strong>Success! The score has been updated.</strong></p>
+		</div>
+		<div class="message score error-message" style='display:none;'>
+			<p><strong>Error! The data could not be saved. Make sure it is valid and try again.</strong></p>
+		</div>
+		
+		<div class="CSSTableGenerator" >
+			<table>
+				<tr>
+					<td>Name</td>
+					<td>Score</td>
+				</tr>
+				<% @teams.each do |team| %>
+					<tr>
+						<td><%= team.name %></td>
+						<td><input type="text" data-id="<%= team.id %>" value="<%= team.score %>"> <a class='update_team' onclick="updateTeam(this)">Update Score</a></td>
+					</tr>
+				<% end %>
+					<tr id="new_team">
+						<td><input type='text' id="team_name" placeholder="Enter team name here"/></td>
+						<td><a id="add_team">Add Team</a></td>
+					</tr>
+			</table>
+		</div>
+		<br/>
+		<div class="message error-message" style='display:none;'>
+			<p><strong>Error! The data could not be saved. Make sure it is valid and unique and try again.</strong></p>
+		</div>
+	</div>
+	
+	<!-- End Content -->
+</div>
+
+<!-- Footer -->
+<div id="footer">
+	<p>&copy; Weybrook Park</p>
+</div>
+<!-- End Footer -->
+</body>
+</html>
