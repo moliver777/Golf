@@ -1,7 +1,10 @@
 <table>
 	<tr>
-		<th></th>
-		<th>NAME</th>
+		<th class="title" colspan="4">TEAM LEADERBOARD</th>
+	</tr>
+	<tr>
+		<th class="small"></th>
+		<th class="big">NAME</th>
 		<th>SCORE</th>
 		<th>+/-</th>
 	</tr>
@@ -11,7 +14,7 @@
 				<% if team.score == @prev_score %>
 					<td>T<%= @prev_position %></td>
 				<% else %>
-					<% if team.score == @teams[i+1].score %>
+					<% if @teams[i+1] && team.score == @teams[i+1].score %>
 						<td>T<%= i+1 %></td>
 					<% else %>
 						<td><%= i+1 %></td>
@@ -34,8 +37,11 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		$("div#content table").fadeIn();
 		setTimeout(function() {
-			$("div#content").load("/get_pros");
+			$("div#content table").fadeOut(function() {
+				$("div#content").load("/get_pros");
+			});
 		},<%= @interval %>);
 	});
 </script>

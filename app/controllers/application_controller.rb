@@ -23,6 +23,6 @@ class ApplicationController < ActionController::Base
     @prev_position = 0
     @team_par = SiteSetting.where("key = ?", "team_par").first.value.to_i rescue 144
     @pro_par = SiteSetting.where("key = ?", "pro_par").first.value.to_i rescue 72
-    @interval = SiteSetting.where("key = ?", "interval").first.value.to_i rescue 5000
+    @interval = SiteSetting.where("key = ?", "interval").first.value.to_i rescue 10000
   end
 end

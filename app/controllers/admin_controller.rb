@@ -1,6 +1,7 @@
 class AdminController < ApplicationController
 	
 	skip_before_filter :setup, :except => [:teams, :pros]
+	layout 'admin'
 	
 	def teams
 		 @teams = Team.order("name ASC")
