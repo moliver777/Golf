@@ -61,4 +61,26 @@ class AdminController < ApplicationController
 		end
 	end
 	
+	def delete_team
+		begin 
+			@team = Team.find(params[:id])
+			@id = @team.id
+			@team.destroy
+			render :json => {:success => true, :team_id => @id}
+		rescue StandardError => e
+			render :json => {:success => false}
+		end
+	end
+	
+	def delete_pro
+		begin 
+			@pro = Pro.find(params[:id])
+			@id = @pro.id
+			@pro.destroy
+			render :json => {:success => true, :pro_id => @id}
+		rescue StandardError => e
+			render :json => {:success => false}
+		end
+	end
+	
 end

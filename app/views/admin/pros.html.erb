@@ -54,8 +54,8 @@
 				<td>Score</td>
 			</tr>
 			<% @pros.each do |pro| %>
-				<tr>
-					<td><%= pro.name %></td>
+				<tr id="pro_<%= pro.id %>">
+					<td><%= pro.name %> <a id="delete_pro" onclick="deletePro('<%= pro.id %>')">X</a></td>
 					<td><input type="text" data-id="<%= pro.id %>" value="<%= pro.score %>"> <a class='update_pro' onclick='updatePro(this)'>Update Score</a></td>
 				</tr>
 			<% end %>

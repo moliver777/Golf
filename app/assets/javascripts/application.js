@@ -15,7 +15,7 @@ $(document).ready(function() {
 		if (pro_name != "") {
 			$.post("/admin/add_pro", {pro_name:pro_name}, function(data) {
 				if ( data.success ) {
-					$("tr#new_pro").before("<tr><td>"+data.pro.name+"</td><td><input data-id='"+data.pro.id+"' value='0' 'type='text'> <a  class='update_pro' onclick='updatePro(this)'>Update Score</a></td></tr>")
+					$("tr#new_pro").before("<tr id='pro_"+data.pro.id+"'><td>"+data.pro.name+" <a onclick='deletePro("+data.pro.id+")'>X</a> </td><td><input data-id='"+data.pro.id+"' value='0' 'type='text'> <a  class='update_pro' onclick='updatePro(this)'>Update Score</a></td></tr>")
 					$("#pro_name").val("")
 				} else {
 					$(".error-message").show().delay(1500).fadeOut(500);
@@ -31,7 +31,7 @@ $(document).ready(function() {
 		if (team_name != "") {
 			$.post("/admin/add_team", {team_name:team_name}, function(data) {
 				if ( data.success ) {
-					$("tr#new_team").before("<tr><td>"+data.team.name+"</td><td><input  data-id='"+data.team.id+"' value='0' 'type='text'> <a class='update_team' onclick='updateTeam(this)'>Update Score</a></td></tr>")
+					$("tr#new_team").before("<tr id='team_"+data.team.id+"'><td>"+data.team.name+"  <a onclick='deleteTeam("+data.team.id+")'>X</a> </td><td><input  data-id='"+data.team.id+"' value='0' 'type='text'> <a class='update_team' onclick='updateTeam(this)'>Update Score</a></td></tr>")
 					$("#team_name").val("")
 				} else {
 					$(".error-message").show().delay(1500).fadeOut(500);
@@ -68,4 +68,26 @@ function updateTeam(el) {
 		}
 			
 	})
+}
+
+function deletePro(id) {
+	if (confirm("Are you sure you want to delete this pro?") ) {
+		$.post("/admin/delete_pro", {id:id}, function(data) {
+			if ( data.success ) {
+				$("#pro_"+data.pro_id).remove()
+			}
+		})
+	}
+
+}
+
+function deleteTeam(id) {
+	if (confirm("Are you sure you want to delete this team?") ) {
+		$.post("/admin/delete_team", {id:id}, function(data) {
+			if ( data.success ) {
+				$("#team_"+data.team_id).remove()
+			}
+		})
+	}
+
 }
