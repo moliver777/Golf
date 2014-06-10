@@ -1,9 +1,41 @@
-PROS
+<table>
+	<tr>
+		<th></th>
+		<th>NAME</th>
+		<th>SCORE</th>
+		<th>+/-</th>
+	</tr>
+	<% @pros.each_with_index do |pro,i| %>
+		<tr>
+			<% if pro.score > 0 %>
+				<% if pro.score == @prev_score %>
+					<td>T<%= @prev_position %></td>
+				<% else %>
+					<% if pro.score == @pros[i+1].score %>
+						<td>T<%= i+1 %></td>
+					<% else %>
+						<td><%= i+1 %></td>
+					<% end %>
+					<% @prev_score = pro.score %>
+					<% @prev_position = i+1 %>
+				<% end %>
+				<td><%= pro.name %></td>
+				<td><%= pro.score %></td>
+				<td><%= pro.score-@pro_par %></td>
+			<% else %>
+				<td>TBC</td>
+				<td><%= pro.name %></td>
+				<td>TBC</td>
+				<td>TBC</td>
+			<% end %>
+		</tr>
+	<% end %>
+</table>
 
 <script type="text/javascript">
 	$(document).ready(function() {
 		setTimeout(function() {
 			$("div#content").load("/get_teams");
-		},5000);
+		},<%= @interval %>);
 	});
 </script>
