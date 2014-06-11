@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140610144447) do
+ActiveRecord::Schema.define(:version => 20140611143503) do
 
   create_table "pros", :force => true do |t|
     t.string   "name",                      :null => false
@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(:version => 20140610144447) do
   end
 
   create_table "site_settings", :force => true do |t|
-    t.string   "key",        :null => false
-    t.string   "value",      :null => false
+    t.string   "config_key",   :default => "", :null => false
+    t.string   "config_value",                 :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

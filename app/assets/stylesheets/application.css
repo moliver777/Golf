@@ -100,8 +100,11 @@ div#header {
   height: 200px;
 }
 
+div#content div#scroll {
+  overflow: hidden;
+}
+
 div#content table {
-  display: none;
   margin: 10px 5%;
   width: 90%;
   line-height: 30px;
@@ -110,15 +113,25 @@ div#content table {
   color: white;
 }
 
-div#content table th {
+div#content table#head {
+  margin-bottom: 0;
+  position: relative;
+  top: 1px;
+}
+
+div#content table#body {
+  margin-top: 0;
+}
+
+div#content table th, div#content table td {
   width: 20%;
 }
 
-div#content table th.small {
+div#content table th.small, div#content table td.small {
   width: 10%;
 }
 
-div#content table th.big {
+div#content table th.big, div#content table td.big {
   width: 50%;
 }
 

@@ -1,7 +1,14 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+SiteSetting.create({
+  config_key: "pro_par",
+  config_value: "72"
+})
+
+SiteSetting.create({
+  config_key: "team_par",
+  config_value: "144"
+})
+
+SiteSetting.create({
+  config_key: "interval",
+  config_value: "30"
+})

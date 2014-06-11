@@ -21,8 +21,8 @@ class ApplicationController < ActionController::Base
   def setup
     @prev_score = 0
     @prev_position = 0
-    @team_par = SiteSetting.where("key = ?", "team_par").first.value.to_i rescue 144
-    @pro_par = SiteSetting.where("key = ?", "pro_par").first.value.to_i rescue 72
-    @interval = SiteSetting.where("key = ?", "interval").first.value.to_i rescue 10000
+    @pro_par = SiteSetting.where("config_key = ?", "pro_par").first.config_value.to_i rescue 72
+    @team_par = SiteSetting.where("config_key = ?", "team_par").first.config_value.to_i rescue 144
+    @interval = (SiteSetting.where("config_key = ?", "interval").first.config_value.to_i*1000) rescue 30000
   end
 end
