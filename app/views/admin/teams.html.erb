@@ -40,28 +40,38 @@
 	<!-- End Help Navigation -->
 	
 	<h1 style="width:200px;float:left;padding-bottom:45px;">Team Management</h1>
-	<div class="message thank-message" style="display:none;">
+	<div class="message thank-message" style="<%= @success == "true" ? 'display:block;' : 'display:none;' %>">
 		<p><strong>Success! The score has been updated.</strong></p>
 	</div>
-	<div class="message score error-message" style='display:none;'>
+	<div class="message score error-message" style="<%= @success == "false" ? 'display:block;' : 'display:none;' %>">
 		<p><strong>Error! The data could not be saved. Make sure it is valid and try again.</strong></p>
 	</div>
 	
 	<div class="CSSTableGenerator" >
 		<table>
 			<tr>
+				<td>Team Image</td>
 				<td>Name</td>
 				<td>Score</td>
 			</tr>
 			<% @teams.each do |team| %>
 				<tr id="team_<%= team.id %>">
+					<% if team.image %>
+						<td style="width:150px"><img src="/get_image?id=<%= team.id %>&type=team" height='100px' width='100px'></td>
+					<% else %>
+						<td style="width:150px">No Image Uploaded</td>
+					<% end %>
 					<td><%= team.name %> <a onclick="deleteTeam('<%= team.id %>')">X</a></td>
 					<td><input type="text" data-id="<%= team.id %>" value="<%= team.score %>"> <a class='update_team' onclick="updateTeam(this)">Update Score</a></td>
 				</tr>
 			<% end %>
 				<tr id="new_team">
-					<td><input type='text' id="team_name" placeholder="Enter team name here"/></td>
-					<td><a id="add_team">Add Team</a></td>
+					<%= form_for(:image_form, :url => { :controller => "admin", :action => :add_team }, :html => { :method => :post, :id => 'teamForm', :multipart => true }) do |f| %>
+					
+						<td><%= f.file_field :image, :id => "team_image" %></td>
+						<td><%= f.text_field :team_name, :value => nil, :placeholder => "Enter team name here", :id => "team_name" %></td>
+						<td><%= f.submit :add_team, :value => "Add Team", :id => "add_team" %></td>
+					<% end %>
 				</tr>
 		</table>
 	</div>

@@ -11,13 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140610144447) do
+ActiveRecord::Schema.define(:version => 20140611132513) do
 
   create_table "pros", :force => true do |t|
     t.string   "name",                      :null => false
     t.integer  "score",      :default => 0, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.binary   "image"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -32,6 +33,7 @@ ActiveRecord::Schema.define(:version => 20140610144447) do
     t.integer  "score",      :default => 0, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.binary   "image"
   end
 
 end

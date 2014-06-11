@@ -4,24 +4,42 @@ class AdminController < ApplicationController
 	layout 'admin'
 	
 	def teams
-		 @teams = Team.order("name ASC")
+		@success = nil	
+		@teams = Team.order("name ASC")
 	end
 	
 	def pros
+		@success = nil	
 		@pros = Pro.order("name ASC")
 	end
 
 	def add_pro
-		begin 
-			@pro = Pro.new(:name => params[:pro_name])
-			if @pro.valid?
-				@pro.save
-				render :json => {:success => true, :pro => @pro}
-			else
+		if params[:image_form]
+			begin 
+				@pro = Pro.new(:name => params[:image_form][:pro_name], :image => params[:image_form][:image].read)
+				if @pro.valid?
+					@pro.save
+					@success = "true"
+				else
+					@success = "false"
+				end
+			rescue StandardError => e
+				@success = "false"
+			end
+			@pros = Pro.order("name ASC")
+			render :pros
+		else
+			begin 
+				@pro = Pro.new(:name => params[:pro_name])
+				if @pro.valid?
+					@pro.save
+					render :json => {:success => true, :pro => @pro}
+				else
+					render :json => {:success => false}
+				end
+			rescue StandardError => e
 				render :json => {:success => false}
 			end
-		rescue StandardError => e
-			render :json => {:success => false}
 		end
 	end
 	
@@ -37,16 +55,32 @@ class AdminController < ApplicationController
 	end
 	
 	def add_team
-		begin 
-			@team = Team.new(:name => params[:team_name])
-			if @team.valid?
-				@team.save
-				render :json => {:success => true, :team => @team}
-			else
+		if params[:image_form]
+			begin 
+				@team = Team.new(:name => params[:image_form][:team_name], :image => params[:image_form][:image].read)
+				if @team.valid?
+					@team.save
+					@success = "true"
+				else
+					@success = "false"
+				end
+			rescue StandardError => e
+				@success = "false"
+			end
+			@teams = Team.order("name ASC")
+			render :teams
+		else
+			begin 
+				@team = Team.new(:name => params[:team_name])
+				if @team.valid?
+					@team.save
+					render :json => {:success => true, :team => @team}
+				else
+					render :json => {:success => false}
+				end
+			rescue StandardError => e
 				render :json => {:success => false}
 			end
-		rescue StandardError => e
-			render :json => {:success => false}
 		end
 	end
 	

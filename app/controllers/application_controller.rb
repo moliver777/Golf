@@ -15,6 +15,17 @@ class ApplicationController < ActionController::Base
     @pros = Pro.where("score > 0").order("score ASC, name ASC")+Pro.where("score = 0").order("name ASC")
     render :partial => "pros"
   end
+	
+  def get_image
+    if params[:type] == "pro"
+      pro = Pro.find(params[:id])
+      @image = pro.image
+    elsif params[:type] == "team"
+      team = Team.find(params[:id])
+      @image = team.image
+    end
+    send_data @image, :disposition => 'inline'
+  end
   
   private
   

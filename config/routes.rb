@@ -3,6 +3,8 @@ Golf::Application.routes.draw do
   
   get "/get_teams" => "application#get_teams"
   get "/get_pros" => "application#get_pros"
+  
+  get "/get_image" => "application#get_image"
 	
 	get "/admin" => "admin#pros"
 	get "/admin/teams" => "admin#teams"

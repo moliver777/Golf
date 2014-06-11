@@ -40,28 +40,37 @@
 	<!-- End Help Navigation -->
 	
 	<h1 style="width:200px;float:left;padding-bottom:45px;">Pro Management</h1>
-	<div class="message thank-message" style="display:none;">
+	<div class="message thank-message" style="<%= @success == "true" ? 'display:block;' : 'display:none;' %>">
 		<p><strong>Success! The score has been updated.</strong></p>
 	</div>
-	<div class="message score error-message" style='display:none;'>
+	<div class="message score error-message" style="<%= @success == "false" ? 'display:block;' : 'display:none;' %>">
 		<p><strong>Error! The data could not be saved. Make sure it is valid and try again.</strong></p>
 	</div>
 	
 	<div class="CSSTableGenerator" >
 		<table>
 			<tr>
+				<td>Pro Image</td>
 				<td>Name</td>
 				<td>Score</td>
 			</tr>
 			<% @pros.each do |pro| %>
 				<tr id="pro_<%= pro.id %>">
-					<td><%= pro.name %> <a id="delete_pro" onclick="deletePro('<%= pro.id %>')">X</a></td>
+					<% if pro.image %>
+						<td style="width:150px"><img src="/get_image?id=<%= pro.id %>&type=pro" height='100px' width='100px'></td>
+					<% else %>
+						<td style="width:150px">No Image Uploaded</td>
+					<% end %>
+					<td style="width:400px"><%= pro.name %> <a id="delete_pro" onclick="deletePro('<%= pro.id %>')">X</a></td>
 					<td><input type="text" data-id="<%= pro.id %>" value="<%= pro.score %>"> <a class='update_pro' onclick='updatePro(this)'>Update Score</a></td>
 				</tr>
 			<% end %>
 				<tr id="new_pro">
-					<td><input type='text' id="pro_name" placeholder="Enter Pros name here"/></td>
-					<td><a id="add_pro">Add Pro</a></td>
+					<%= form_for(:image_form, :url => { :controller => "admin", :action => :add_pro }, :html => { :method => :post, :id => 'proForm', :multipart => true }) do |f| %>
+						<td><%= f.file_field :image, :id => "pro_image" %></td>
+						<td><%= f.text_field :pro_name, :value => nil, :placeholder => "Enter Pros name here", :id => "pro_name" %></td>
+						<td><%= f.submit :add_pro, :value => "Add Pro", :id => "add_pro" %></td>
+					<% end %>
 				</tr>
 		</table>
 	</div>
