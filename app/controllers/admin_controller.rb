@@ -5,12 +5,23 @@ class AdminController < ApplicationController
 	
 	def teams
 		@success = nil	
-		@teams = Team.order("name ASC")
+		if params[:name]
+			@search = params[:name]
+			@teams = Team.where("name like ?", "%#{params[:name]}%").order("name ASC")
+		else
+			@teams = Team.order("name ASC")
+		end
 	end
 	
 	def pros
 		@success = nil	
-		@pros = Pro.order("name ASC")
+		if params[:name]
+			@search = params[:name]
+			@pros = Pro.where("name like ?", "%#{params[:name]}%").order("name ASC")
+		else
+			@pros = Pro.order("name ASC")
+		end
+		
 	end
 
 	def add_pro

@@ -28,6 +28,16 @@ $(document).ready(function() {
 			}
 		}
 
+	});
+	
+	$("#pro_search_btn").click(function() {
+		pro_name = $("#pro_search").val();
+		window.location.href = "/admin/pros?name="+pro_name
+	})
+	
+	$("#team_search_btn").click(function() {
+		pro_name = $("#team_search").val();
+		window.location.href = "/admin/teams?name="+pro_name
 	})
 	
 
