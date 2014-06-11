@@ -148,6 +148,34 @@ class AdminController < ApplicationController
 		render :pros
 	end
 	
+	def delete_team_image
+		begin 
+			@team = Team.find(params[:id])
+			@id = @team.id
+			@team.image = nil
+			@team.save
+			render :json => {:success => true, :team_id => @id}
+		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
+			render :json => {:success => false}
+		end
+	end
+	
+	def delete_pro_image
+		begin 
+			@pro = Pro.find(params[:id])
+			@id = @pro.id
+			@pro.image = nil
+			@pro.save
+			render :json => {:success => true, :pro_id => @id}
+		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
+			render :json => {:success => false}
+		end
+	end
+	
 	def delete_team
 		begin 
 			@team = Team.find(params[:id])

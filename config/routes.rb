@@ -20,5 +20,8 @@ Golf::Application.routes.draw do
   
   post "/admin/update_pro_image" => "admin#update_pro_image"
   post "/admin/update_team_image" => "admin#update_team_image"
+  
+  post "/admin/delete_pro_image" => "admin#delete_pro_image"
+  post "/admin/delete_team_image" => "admin#delete_team_image"
 	
 end

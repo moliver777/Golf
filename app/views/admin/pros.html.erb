@@ -61,7 +61,10 @@
 			<% @pros.each do |pro| %>
 				<tr id="pro_<%= pro.id %>">
 					<% if pro.image %>
-						<td style="width:150px"><img src="/get_image?id=<%= pro.id %>&type=pro" height='100px' width='100px'></td>
+						<td style="width:150px" id="pro_image_<%= pro.id %>">
+							<img src="/get_image?id=<%= pro.id %>&type=pro" height='100px' width='100px'>
+							<a id="delete_pro_image" onclick="deleteProImage('<%= pro.id %>')">X</a>
+						</td>
 					<% else %>
 						<td>
 							<%= form_for(:image_form, :url => { :controller => "admin", :action => :update_pro_image }, :html => { :method => :post, :id => 'proForm', :multipart => true }) do |f| %>

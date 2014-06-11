@@ -110,3 +110,27 @@ function deleteTeam(id) {
 	}
 
 }
+
+function deleteTeamImage(id) {
+	if (confirm("Are you sure you want to delete this teams image?") ) {
+		$.post("/admin/delete_team_image", {id:id}, function(data) {
+			if ( data.success ) {
+				$("#team_image_"+data.team_id).html('<form accept-charset="UTF-8" action="/admin/update_team_image" enctype="multipart/form-data" id="proForm" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="Ty6R1Wtkmm0syBqvu1Zbo3G4Wy+xu0ZdoRzl37EyHrE="></div><input id="team_image" name="image_form[image]" type="file"><input id="image_form_id" name="image_form[id]" type="hidden" value="'+data.team_id+'"><input id="add_team" name="commit" type="submit" value="Add Image"></form>')
+			}
+		})
+	}
+
+}
+
+function deleteProImage(id) {
+	if (confirm("Are you sure you want to delete this pro image?") ) {
+		$.post("/admin/delete_pro_image", {id:id}, function(data) {
+			if ( data.success ) {
+				$("#pro_image_"+data.pro_id).html('<form accept-charset="UTF-8" action="/admin/update_pro_image" enctype="multipart/form-data" id="proForm" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="Ty6R1Wtkmm0syBqvu1Zbo3G4Wy+xu0ZdoRzl37EyHrE="></div><input id="pro_image" name="image_form[image]" type="file"><input id="image_form_id" name="image_form[id]" type="hidden" value="'+data.pro_id+'"><input id="add_pro" name="commit" type="submit" value="Add Image"></form>')
+			}
+		})
+	}
+
+}
+
+
