@@ -63,7 +63,13 @@
 					<% if pro.image %>
 						<td style="width:150px"><img src="/get_image?id=<%= pro.id %>&type=pro" height='100px' width='100px'></td>
 					<% else %>
-						<td style="width:150px">No Image Uploaded</td>
+						<td>
+							<%= form_for(:image_form, :url => { :controller => "admin", :action => :update_pro_image }, :html => { :method => :post, :id => 'proForm', :multipart => true }) do |f| %>
+								<%= f.file_field :image, :id => "pro_image" %>
+								<%= f.hidden_field :id, :value => pro.id %>
+								<%= f.submit :add_pro, :value => "Add Image", :id => "add_pro" %>
+							<% end %>
+						</td>
 					<% end %>
 					<td style="width:400px"><%= pro.name %> <a id="delete_pro" onclick="deletePro('<%= pro.id %>')">X</a></td>
 					<td><input type="text" data-id="<%= pro.id %>" value="<%= pro.score %>"> <a class='update_pro' onclick='updatePro(this)'>Update Score</a></td>

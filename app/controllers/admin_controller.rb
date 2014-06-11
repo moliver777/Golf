@@ -35,6 +35,8 @@ class AdminController < ApplicationController
 					@success = "false"
 				end
 			rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 				@success = "false"
 			end
 			@pros = Pro.order("name ASC")
@@ -49,6 +51,8 @@ class AdminController < ApplicationController
 					render :json => {:success => false}
 				end
 			rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 				render :json => {:success => false}
 			end
 		end
@@ -61,6 +65,8 @@ class AdminController < ApplicationController
 			@pro.save!
 			render :json => {:success => true, :pro => @pro}
 		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 			render :json => {:success => false}
 		end
 	end
@@ -76,6 +82,8 @@ class AdminController < ApplicationController
 					@success = "false"
 				end
 			rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 				@success = "false"
 			end
 			@teams = Team.order("name ASC")
@@ -90,6 +98,8 @@ class AdminController < ApplicationController
 					render :json => {:success => false}
 				end
 			rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 				render :json => {:success => false}
 			end
 		end
@@ -102,8 +112,40 @@ class AdminController < ApplicationController
 			@team.save!
 			render :json => {:success => true, :team => @team}
 		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 			render :json => {:success => false}
 		end
+	end
+	
+	def update_team_image
+		begin 
+			@team = Team.find(params[:image_form][:id])
+			@team.image = params[:image_form][:image].read
+			@team.save
+			@success = "true"
+		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
+			@success = "false"
+		end
+		@teams = Team.order("name ASC")
+		render :teams
+	end
+	
+	def update_pro_image
+		begin 
+			@pro = Pro.find(params[:image_form][:id])
+			@pro.image = params[:image_form][:image].read
+			@pro.save
+			@success = "true"
+		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
+			@success = "false"
+		end
+		@pros = Pro.order("name ASC")
+		render :pros
 	end
 	
 	def delete_team
@@ -113,6 +155,8 @@ class AdminController < ApplicationController
 			@team.destroy
 			render :json => {:success => true, :team_id => @id}
 		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 			render :json => {:success => false}
 		end
 	end
@@ -124,6 +168,8 @@ class AdminController < ApplicationController
 			@pro.destroy
 			render :json => {:success => true, :pro_id => @id}
 		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 			render :json => {:success => false}
 		end
 	end
