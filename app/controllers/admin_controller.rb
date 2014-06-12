@@ -1,56 +1,29 @@
 class AdminController < ApplicationController
 	
-	skip_before_filter :setup, :except => [:teams, :pros]
+	skip_before_filter :setup, :except => [:index]
 	layout 'admin'
 	
-	def teams
+  def index
 		@success = nil	
 		if params[:name]
 			@search = params[:name]
-			@teams = Team.where("name like ?", "%#{params[:name]}%").order("name ASC")
+      @pros = Pro.where("name LIKE ?", "%#{params[:name]}%")
+			@teams = Team.includes(:pro).where("teams.amateur_1 LIKE ? OR teams.amateur_2 LIKE ? OR teams.amateur_3 LIKE ? OR teams.pro_id IN (?)", "%#{params[:name]}%", "%#{params[:name]}%", "%#{params[:name]}%", @pros.map{|pro| pro.id}).order("pros.name ASC")
 		else
-			@teams = Team.order("name ASC")
+			@teams = Team.includes(:pro).order("pros.name ASC")
 		end
-	end
-	
-	def pros
-		@success = nil	
-		if params[:name]
-			@search = params[:name]
-			@pros = Pro.where("name like ?", "%#{params[:name]}%").order("name ASC")
-		else
-			@pros = Pro.order("name ASC")
-		end
-		
-	end
+  end
 
-	def add_pro
-		if params[:image_form]
-			begin 
-				@pro = Pro.new(:name => params[:image_form][:pro_name], :image => params[:image_form][:image].read)
-				if @pro.valid?
-					@pro.save
-					@success = "true"
-				else
-					@success = "false"
-				end
-			rescue StandardError => e
-				@success = "false"
-			end
-			@pros = Pro.order("name ASC")
-			render :pros
-		else
-			begin 
-				@pro = Pro.new(:name => params[:pro_name])
-				if @pro.valid?
-					@pro.save
-					render :json => {:success => true, :pro => @pro}
-				else
-					render :json => {:success => false}
-				end
-			rescue StandardError => e
-				render :json => {:success => false}
-			end
+	def add_team
+		begin
+      @pro = Pro.new(:name => params[:pro])
+      @pro.save!
+			@team = Team.new(:pro_id => @pro.id, :amateur_1 => params[:amateur_1], :amateur_2 => params[:amateur_2], :amateur_3 => params[:amateur_3])
+			@team.save!
+      @teams = Team.includes(:pro).order("pros.name ASC")
+			render :json => {:success => true, :view => render_to_string(:partial => "team_table")}
+		rescue StandardError => e
+			render :json => {:success => false}
 		end
 	end
 	
@@ -59,48 +32,18 @@ class AdminController < ApplicationController
 			@pro = Pro.find(params[:pro_id])
 			@pro.score = params[:score]
 			@pro.save!
-			render :json => {:success => true, :pro => @pro}
+			render :json => {:success => true}
 		rescue StandardError => e
 			render :json => {:success => false}
 		end
 	end
-	
-	def add_team
-		if params[:image_form]
-			begin 
-				@team = Team.new(:name => params[:image_form][:team_name], :image => params[:image_form][:image].read)
-				if @team.valid?
-					@team.save
-					@success = "true"
-				else
-					@success = "false"
-				end
-			rescue StandardError => e
-				@success = "false"
-			end
-			@teams = Team.order("name ASC")
-			render :teams
-		else
-			begin 
-				@team = Team.new(:name => params[:team_name])
-				if @team.valid?
-					@team.save
-					render :json => {:success => true, :team => @team}
-				else
-					render :json => {:success => false}
-				end
-			rescue StandardError => e
-				render :json => {:success => false}
-			end
-		end
-	end
-	
-	def update_team_score
+  
+	def update_amateur_score
 		begin 
 			@team = Team.find(params[:team_id])
 			@team.score = params[:score]
 			@team.save!
-			render :json => {:success => true, :team => @team}
+			render :json => {:success => true}
 		rescue StandardError => e
 			render :json => {:success => false}
 		end
@@ -109,7 +52,9 @@ class AdminController < ApplicationController
 	def delete_team
 		begin 
 			@team = Team.find(params[:id])
+      @pro = @team.pro
 			@id = @team.id
+      @pro.destroy
 			@team.destroy
 			render :json => {:success => true, :team_id => @id}
 		rescue StandardError => e
@@ -117,15 +62,14 @@ class AdminController < ApplicationController
 		end
 	end
 	
-	def delete_pro
-		begin 
-			@pro = Pro.find(params[:id])
-			@id = @pro.id
-			@pro.destroy
-			render :json => {:success => true, :pro_id => @id}
-		rescue StandardError => e
-			render :json => {:success => false}
-		end
-	end
-	
+  def add_image
+    @team = Team.find(params[:id])
+  end
+  
+  def save_image
+    @team = Team.find(params[:id])
+    @team.image = params[:team_image][:image_file].read
+    @team.save!
+    redirect_to "/admin"
+  end
 end

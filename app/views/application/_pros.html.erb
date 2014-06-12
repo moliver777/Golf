@@ -1,13 +1,13 @@
 <table id="head">
 	<thead>
 		<tr>
-			<th class="title" colspan="4">PROS LEADERBOARD</th>
+			<th class="title" colspan="4">PROFESSIONAL LEADERBOARD</th>
 		</tr>
 		<tr>
 			<th class="small"></th>
-			<th class="big">NAME</th>
-			<th>SCORE</th>
-			<th>+/- <span style="font-size:14px;position:relative;bottom:2px;">(par <%= @pro_par %>)</span></th>
+			<th class="big">Name</th>
+			<th>Score</th>
+			<th>+/- <span style="font-size:14px;position:relative;bottom:2px;">(<%= @pro_par %>)</span></th>
 		</tr>
 	</thead>
 </table>
@@ -49,11 +49,13 @@
 		clearTimeout(window.team2);
 		$("#scroll").css("height", Math.max($(window).height()-($("table#head").height()+212), 284)+"px");
 		$("#scroll").scrollTop($("#scroll").prop("scrollHeight"));
+		var max_scroll = $("#scroll").scrollTop();
+		$("#scroll").scrollTop(0);
 		window.pro1 = setTimeout(function() {
 			clearTimeout(window.pro1);
 			$("#scroll").animate({
-				scrollTop: 0
-			}, <%= (@interval.to_f*0.7).to_i %>, "linear", function() {
+				scrollTop: max_scroll
+			}, <%= (@interval.to_f*0.5).to_i %>, "linear", function() {
 				window.pro2 = setTimeout(function() {
 					clearTimeout(window.pro2);
 					$("div#content table").fadeOut("fast", function() {
@@ -63,6 +65,6 @@
 					});
 				},<%= (@interval.to_f*0.2).to_i %>);
 			});
-		}, <%= (@interval.to_f*0.1).to_i %>);
+		}, <%= (@interval.to_f*0.3).to_i %>);
 	});
 </script>

@@ -10,103 +10,76 @@
 
 
 $(document).ready(function() {
-	$("#add_pro").click(function(e) {
-		pro_name = $("#pro_name").val()
-		pro_image = $("#pro_image").val()
-		if (pro_image == "") {
-			e.preventDefault();
-			if (pro_name != "") {
-				$.post("/admin/add_pro", {pro_name:pro_name}, function(data) {
-					if ( data.success ) {
-						$("tr#new_pro").before("<tr id='pro_"+data.pro.id+"'><td>"+data.pro.name+" <a onclick='deletePro("+data.pro.id+")'>X</a> </td><td><input data-id='"+data.pro.id+"' value='0' 'type='text'> <a  class='update_pro' onclick='updatePro(this)'>Update Score</a></td></tr>")
-						$("#pro_name").val("")
-					} else {
-						$(".error-message").show().delay(1500).fadeOut(500);
-					}
-				
-				})
-			}
-		}
-
-	});
-	
-	$("#pro_search_btn").click(function() {
-		pro_name = $("#pro_search").val();
-		window.location.href = "/admin/pros?name="+pro_name
-	})
-	
 	$("#team_search_btn").click(function() {
 		pro_name = $("#team_search").val();
-		window.location.href = "/admin/teams?name="+pro_name
-	})
-	
+		window.location.href = "/admin?name="+pro_name;
+	});
+  
+	$("#team_clear_btn").click(function() {
+		$("#team_search").val("");
+		window.location.href = "/admin";
+	});
 
 	$("#add_team").click(function() {
-		team_name = $("#team_name").val()
-		team_image = $("#pro_image").val()
-		if (team_image == "") {
-			e.preventDefault();
-			if (team_name != "") {
-				$.post("/admin/add_team", {team_name:team_name}, function(data) {
-					if ( data.success ) {
-						$("tr#new_team").before("<tr id='team_"+data.team.id+"'><td>"+data.team.name+"  <a onclick='deleteTeam("+data.team.id+")'>X</a> </td><td><input  data-id='"+data.team.id+"' value='0' 'type='text'> <a class='update_team' onclick='updateTeam(this)'>Update Score</a></td></tr>")
-						$("#team_name").val("")
-					} else {
-						$(".error-message").show().delay(1500).fadeOut(500);
-					}
-					
-				})
-			}
-		}
-	})
-})
+		pro = $("#pro").val();
+    amateur_1 = $("#amateur_1").val();
+    amateur_2 = $("#amateur_2").val();
+    amateur_3 = $("#amateur_3").val();
+    if (pro != "") {
+  		$.post("/admin/add_team", {pro:pro,amateur_1:amateur_1,amateur_2:amateur_2,amateur_3:amateur_3}, function(data) {
+  			if ( data.success ) {
+  				$("#team_table").html(data.view);
+  				$(".clear").val("");
+  			} else {
+  				$(".error-message").show().delay(1500).fadeOut(500);
+  			}
+  		});
+    }
+  });
+});
+
+
 
 function updatePro(el) {
-	pro_id = $(el).siblings("input").attr("data-id")
-	score = $(el).siblings("input").val()
+	pro_id = $(el).siblings("input").attr("data-id");
+	score = $(el).siblings("input").val();
 	
-	$.post("/admin/update_score", {pro_id:pro_id, score:score}, function(data) {
-		if ( data.success ) {
+	$.post("/admin/update_pro_score", {pro_id:pro_id,score:score}, function(data) {
+		if (data.success) {
 			$(".thank-message").show().delay(1500).fadeOut(500);
 		} else {
 			$(".error-message.score").show().delay(1500).fadeOut(500);
 		}
-			
-	})
+	});
 }
 
 function updateTeam(el) {
-	team_id = $(el).siblings("input").attr("data-id")
-	score = $(el).siblings("input").val()
+	team_id = $(el).siblings("input").attr("data-id");
+	score = $(el).siblings("input").val();
 	
-	$.post("/admin/update_team_score", {team_id:team_id, score:score}, function(data) {
-		if ( data.success ) {
+	$.post("/admin/update_amateur_score", {team_id:team_id,score:score}, function(data) {
+		if (data.success) {
 			$(".thank-message").show().delay(1500).fadeOut(500);
 		} else {
 			$(".error-message.score").show().delay(1500).fadeOut(500);
-		}
-			
-	})
-}
-
-function deletePro(id) {
-	if (confirm("Are you sure you want to delete this pro?") ) {
-		$.post("/admin/delete_pro", {id:id}, function(data) {
-			if ( data.success ) {
-				$("#pro_"+data.pro_id).remove()
-			}
-		})
-	}
-
+		}	
+	});
 }
 
 function deleteTeam(id) {
-	if (confirm("Are you sure you want to delete this team?") ) {
+	if (confirm("Are you sure you want to delete this team?")) {
 		$.post("/admin/delete_team", {id:id}, function(data) {
-			if ( data.success ) {
-				$("#team_"+data.team_id).remove()
+			if (data.success) {
+				$("#team_"+data.team_id).remove();
 			}
-		})
+		});
 	}
+}
 
+function checkFile(el,allowed) {
+	var suffix = $(el).val().split(".")[$(el).val().split(".").length-1].toUpperCase();
+	if (!(allowed.indexOf(suffix) !== -1)) {
+		alert("File type not allowed,\nAllowed files: *."+allowed.join(",*."));
+		$(el).val("");
+	}
 }

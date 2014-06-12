@@ -4,21 +4,12 @@
 		
 		<div id="head">
 			<h1><a href="#">Weybrook Park Pro-Am Admin</a></h1>
-			<div class="right" style="display:none;">
-				<p>
-					Welcome <a href="#"><strong>Administrator</strong></a> | 
-					<a href="#">Help</a> |
-					<a href="#">teamfile Settings</a> |
-					<a href="#">Logout</a>
-				</p>
-			</div>
 		</div>
 		
 		<!-- Navigation -->
 		<div id="navigation">
 			<ul>
-			    <li><a href="/admin/pros"><span>Pro Management</span></a></li>
-				<li><a href="/admin/teams" class="active"><span>Team Management</span></a></li>
+			    <li><a href="/admin" class="active"><span>Team Management</span></a></li>
 			    <li><a href="/"><span>View Leaderboard</span></a></li>
 			</ul>
 		</div>
@@ -43,6 +34,7 @@
 	<div style="float:right">
 		<input type="text" placeholder="Search Teams" id="team_search" value="<%= @search %>"/>
 		<input type="submit" value="Search" id="team_search_btn"/>
+		<input type="submit" value="Clear" id="team_clear_btn"/>
 	</div>
 	<div class="message thank-message" style="<%= @success == "true" ? 'display:block;' : 'display:none;' %>">
 		<p><strong>Success! The score has been updated.</strong></p>
@@ -52,31 +44,20 @@
 	</div>
 	
 	<div class="CSSTableGenerator" >
+		<table id="team_table">
+			<%= render :partial => "team_table" %>
+		</table>
+	</div>
+	<br/>
+	<div class="CSSTableGenerator">
 		<table>
-			<tr>
-				<td>Team Image</td>
-				<td>Name</td>
-				<td>Score</td>
+			<tr id="new_team">
+				<td><%= text_field_tag :pro, nil, {:placeholder => "Enter pro name here", :id => "pro", :class => "clear"} %></td>
+				<td><%= text_field_tag :amateur_1, nil, {:placeholder => "Enter amateur 1 here", :id => "amateur_1", :class => "clear"} %></td>
+				<td><%= text_field_tag :amateur_2, nil, {:placeholder => "Enter amateur 2 here", :id => "amateur_2", :class => "clear"} %></td>
+				<td><%= text_field_tag :amateur_3, nil, {:placeholder => "Enter amateur 3 here", :id => "amateur_3", :class => "clear"} %></td>
+				<td><%= submit_tag "Add Team", :id => "add_team" %></td>
 			</tr>
-			<% @teams.each do |team| %>
-				<tr id="team_<%= team.id %>">
-					<% if team.image %>
-						<td style="width:150px"><img src="/get_image?id=<%= team.id %>&type=team" height='100px' width='100px'></td>
-					<% else %>
-						<td style="width:150px">No Image Uploaded</td>
-					<% end %>
-					<td><%= team.name %> <a onclick="deleteTeam('<%= team.id %>')">X</a></td>
-					<td><input type="text" data-id="<%= team.id %>" value="<%= team.score %>"> <a class='update_team' onclick="updateTeam(this)">Update Score</a></td>
-				</tr>
-			<% end %>
-				<tr id="new_team">
-					<%= form_for(:image_form, :url => { :controller => "admin", :action => :add_team }, :html => { :method => :post, :id => 'teamForm', :multipart => true }) do |f| %>
-					
-						<td><%= f.file_field :image, :id => "team_image" %></td>
-						<td><%= f.text_field :team_name, :value => nil, :placeholder => "Enter team name here", :id => "team_name" %></td>
-						<td><%= f.submit :add_team, :value => "Add Team", :id => "add_team" %></td>
-					<% end %>
-				</tr>
 		</table>
 	</div>
 	<br/>

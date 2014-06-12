@@ -1,0 +1,26 @@
+<tr>
+	<td></td>
+	<td>Pro</td>
+	<td>Pro-Score</td>
+	<td>Amateur 1</td>
+	<td>Amateur 2</td>
+	<td>Amateur 3</td>
+	<td>Amateur-Score</td>
+	<td></td>
+</tr>
+<% @teams.each do |team| %>
+	<tr id="team_<%= team.id %>">
+		<% if team.image %>
+			<td style="width:150px"><img src="/get_image?id=<%= team.id %>" height='60px' width='90px' /></td>
+		<% else %>
+			<td style="width:150px"><a href="/admin/add_image/<%= team.id %>">Click to add image</a></td>
+		<% end %>
+		<td><%= team.pro.name %></td>
+		<td><input type="text" data-id="<%= team.pro.id %>" value="<%= team.pro.score %>"><br/><a class='update_pro' onclick="updatePro(this)">Update Score</a></td>
+		<td><%= team.amateur_1 %></td>
+		<td><%= team.amateur_2 %></td>
+		<td><%= team.amateur_3 %></td>
+		<td><input type="text" data-id="<%= team.id %>" value="<%= team.score %>"><br/><a class='update_team' onclick="updateTeam(this)">Update Score</a></td>
+		<td><a onclick="deleteTeam('<%= team.id %>')">Delete</a></td>
+	</tr>
+<% end %>

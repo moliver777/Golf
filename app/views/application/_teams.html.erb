@@ -1,13 +1,17 @@
 <table id="head">
 	<thead>
 		<tr>
-			<th class="title" colspan="4">TEAM LEADERBOARD</th>
+			<th class="title" colspan="8">TEAM LEADERBOARD</th>
 		</tr>
 		<tr>
-			<th class="small"></th>
-			<th class="big">NAME</th>
-			<th>SCORE</th>
-			<th>+/- <span style="font-size:14px;position:relative;bottom:2px;">(par <%= @team_par %>)</span></th>
+			<th class="image"><div>&nbsp;</div></th>
+			<th class="tiny"></th>
+			<th>Professional</th>
+			<th>Amateur 1</th>
+			<th>Amateur 2</th>
+			<th>Amateur 3</th>
+			<th class="tiny">Score</th>
+			<th class="tiny">+/- <span style="font-size:14px;position:relative;bottom:2px;">(<%= @team_par %>)</span></th>
 		</tr>
 	</thead>
 </table>
@@ -16,26 +20,37 @@
 		<tbody>
 			<% @teams.each_with_index do |team,i| %>
 				<tr>
-					<% if team.score > 0 %>
-						<% if team.score == @prev_score %>
-							<td class="small">T<%= @prev_position %></td>
+					<% if team["image"] %>
+						<td class="image"><div><img src="/get_image?id=<%= team["id"] %>" height='60px' width='90px' class="img_top" /></div></td>
+					<% else %>
+						<td class="image"><div><img src="/assets/hpga.png" height='60px' width='90px' class="img_top" /></div></td>
+					<% end %>
+					<% if team["total_score"] > 0 %>
+						<% if team["total_score"] == @prev_score %>
+							<td class="tiny">T<%= @prev_position %></td>
 						<% else %>
-							<% if @teams[i+1] && team.score == @teams[i+1].score %>
-								<td class="small">T<%= i+1 %></td>
+							<% if @teams[i+1] && team["total_score"] == @teams[i+1]["total_score"] %>
+								<td class="tiny">T<%= i+1 %></td>
 							<% else %>
-								<td class="small"><%= i+1 %></td>
+								<td class="tiny"><%= i+1 %></td>
 							<% end %>
-							<% @prev_score = team.score %>
+							<% @prev_score = team["total_score"] %>
 							<% @prev_position = i+1 %>
 						<% end %>
-						<td class="big"><%= team.name %></td>
-						<td><%= team.score %></td>
-						<td><%= team.score-@team_par %></td>
+						<td><%= team["pro"]["name"] %></td>
+						<td><%= team["amateur_1"] %></td>
+						<td><%= team["amateur_2"] %></td>
+						<td><%= team["amateur_3"] %></td>
+						<td class="tiny"><%= team["total_score"] %></td>
+						<td class="tiny"><%= team["total_score"]-@team_par %></td>
 					<% else %>
-						<td class="small">-</td>
-						<td class="big"><%= team.name %></td>
-						<td>-</td>
-						<td>-</td>
+						<td class="tiny">-</td>
+						<td><%= team["pro"]["name"] %></td>
+						<td><%= team["amateur_1"] %></td>
+						<td><%= team["amateur_2"] %></td>
+						<td><%= team["amateur_3"] %></td>
+						<td class="tiny">-</td>
+						<td class="tiny">-</td>
 					<% end %>
 				</tr>
 			<% end %>
@@ -49,11 +64,13 @@
 		clearTimeout(window.pro2);
 		$("#scroll").css("height", Math.max($(window).height()-($("table#head").height()+212), 284)+"px");
 		$("#scroll").scrollTop($("#scroll").prop("scrollHeight"));
+		var max_scroll = $("#scroll").scrollTop();
+		$("#scroll").scrollTop(0);
 		window.team1 = setTimeout(function() {
 			clearInterval(window.team1);
 			$("#scroll").animate({
-				scrollTop: 0
-			}, <%= (@interval.to_f*0.7).to_i %>, "linear", function() {
+				scrollTop: max_scroll
+			}, <%= (@interval.to_f*0.65).to_i %>, "linear", function() {
 				window.team2 = setTimeout(function() {
 					clearInterval(window.team2);
 					$("div#content table").fadeOut("fast", function() {
@@ -61,8 +78,8 @@
 							$("div#content").html(response);
 						});
 					});
-				},<%= (@interval.to_f*0.2).to_i %>);
+				},<%= (@interval.to_f*0.1).to_i %>);
 			});
-		}, <%= (@interval.to_f*0.1).to_i %>);
+		}, <%= (@interval.to_f*0.25).to_i %>);
 	});
 </script>
