@@ -12,4 +12,5 @@ Golf::Application.routes.draw do
 	post "/admin/delete_team"  => "admin#delete_team"
   get "/admin/add_image/:id" => "admin#add_image"
   post "/admin/add_image/:id" => "admin#save_image"
+  post "/admin/delete_image" => "admin#delete_image"
 end

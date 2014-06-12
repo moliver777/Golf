@@ -34,6 +34,8 @@ class AdminController < ApplicationController
 			@pro.save!
 			render :json => {:success => true}
 		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 			render :json => {:success => false}
 		end
 	end
@@ -45,6 +47,8 @@ class AdminController < ApplicationController
 			@team.save!
 			render :json => {:success => true}
 		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 			render :json => {:success => false}
 		end
 	end
@@ -58,6 +62,8 @@ class AdminController < ApplicationController
 			@team.destroy
 			render :json => {:success => true, :team_id => @id}
 		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
 			render :json => {:success => false}
 		end
 	end
@@ -71,5 +77,12 @@ class AdminController < ApplicationController
     @team.image = params[:team_image][:image_file].read
     @team.save!
     redirect_to "/admin"
+  end
+  
+  def delete_image
+    @team = Team.find(params[:id])
+    @team.image = nil
+    @team.save!
+    render :json => {:success => true}
   end
 end

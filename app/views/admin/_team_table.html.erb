@@ -11,7 +11,7 @@
 <% @teams.each do |team| %>
 	<tr id="team_<%= team.id %>">
 		<% if team.image %>
-			<td style="width:150px"><img src="/get_image?id=<%= team.id %>" height='60px' width='90px' /></td>
+			<td style="width:150px"><img src="/get_image?id=<%= team.id %>" height='60px' width='90px' onclick="window.location.href='/admin/add_image/<%= team.id %>'" style="cursor:pointer;" /></td>
 		<% else %>
 			<td style="width:150px"><a href="/admin/add_image/<%= team.id %>">Click to add image</a></td>
 		<% end %>

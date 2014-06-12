@@ -38,8 +38,6 @@ $(document).ready(function() {
   });
 });
 
-
-
 function updatePro(el) {
 	pro_id = $(el).siblings("input").attr("data-id");
 	score = $(el).siblings("input").val();
@@ -74,6 +72,16 @@ function deleteTeam(id) {
 			}
 		});
 	}
+}
+
+function deleteImage(id) {
+  if (confirm("Are you sure you want to delete this image?")) {
+		$.post("/admin/delete_image", {id:id}, function(data) {
+			if (data.success) {
+				window.location.reload();
+			}
+		});
+  }
 }
 
 function checkFile(el,allowed) {
