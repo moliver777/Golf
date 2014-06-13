@@ -25,24 +25,24 @@
 					<% else %>
 						<td class="image"><div><img src="/assets/hpga.png" height='60px' width='90px' class="img_top" /></div></td>
 					<% end %>
-					<% if team["total_score"] > 0 %>
-						<% if team["total_score"] == @prev_score %>
+					<% if team["score"] > 0 %>
+						<% if team["score"] == @prev_score %>
 							<td class="tiny">T<%= @prev_position %></td>
 						<% else %>
-							<% if @teams[i+1] && team["total_score"] == @teams[i+1]["total_score"] %>
+							<% if @teams[i+1] && team["score"] == @teams[i+1]["score"] %>
 								<td class="tiny">T<%= i+1 %></td>
 							<% else %>
 								<td class="tiny"><%= i+1 %></td>
 							<% end %>
-							<% @prev_score = team["total_score"] %>
+							<% @prev_score = team["score"] %>
 							<% @prev_position = i+1 %>
 						<% end %>
 						<td><%= team["pro"]["name"] %></td>
 						<td><%= team["amateur_1"] %></td>
 						<td><%= team["amateur_2"] %></td>
 						<td><%= team["amateur_3"] %></td>
-						<td class="tiny"><%= team["total_score"] %></td>
-						<td class="tiny"><%= team["total_score"]-@team_par %></td>
+						<td class="tiny"><%= team["score"] %></td>
+						<td class="tiny"><%= team["score"]-@team_par %></td>
 					<% else %>
 						<td class="tiny">-</td>
 						<td><%= team["pro"]["name"] %></td>
