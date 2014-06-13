@@ -4,14 +4,14 @@ class ApplicationController < ActionController::Base
   
   def index
     teams = Team.all.map{|team| expand_team(team)}
-    teams.sort!{|a,b| a["total_score"]-b["total_score"]}
-    @teams = teams.select{|team| team["total_score"] != 0}+teams.select{|team| team["total_score"] == 0}.sort{|a,b| a["pro"]["name"] <=> b["pro"]["name"]}
+    teams.sort!{|a,b| a["score"]-b["score"]}
+    @teams = teams.select{|team| team["score"] != 0}+teams.select{|team| team["score"] == 0}.sort{|a,b| a["pro"]["name"] <=> b["pro"]["name"]}
   end
   
   def get_teams
     teams = Team.all.map{|team| expand_team(team)}
-    teams.sort!{|a,b| a["total_score"]-b["total_score"]}
-    @teams = teams.select{|team| team["total_score"] != 0}+teams.select{|team| team["total_score"] == 0}.sort{|a,b| a["pro"]["name"].downcase <=> b["pro"]["name"].downcase}
+    teams.sort!{|a,b| a["score"]-b["score"]}
+    @teams = teams.select{|team| team["score"] != 0}+teams.select{|team| team["score"] == 0}.sort{|a,b| a["pro"]["name"].downcase <=> b["pro"]["name"].downcase}
     render :partial => "teams"
   end
   
