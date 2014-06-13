@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
     pro = team.pro
     xteam = team.attributes
     xteam["pro"] = pro.attributes
-    xteam["total_score"] = (team.score > 0 && pro.score > 0) ? team.score+pro.score : 0
+    xteam["total_score"] = (team.score > 0) ? team.score : 0
     xteam
   end
 end
