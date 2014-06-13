@@ -25,11 +25,15 @@ $(document).ready(function() {
     amateur_1 = $("#amateur_1").val();
     amateur_2 = $("#amateur_2").val();
     amateur_3 = $("#amateur_3").val();
+    tee_hour = $("select#tee_hour").val();
+    tee_mins = $("select#tee_mins").val();
     if (pro != "") {
-  		$.post("/admin/add_team", {pro:pro,amateur_1:amateur_1,amateur_2:amateur_2,amateur_3:amateur_3}, function(data) {
+  		$.post("/admin/add_team", {pro:pro,amateur_1:amateur_1,amateur_2:amateur_2,amateur_3:amateur_3,tee_hour:tee_hour,tee_mins:tee_mins}, function(data) {
   			if ( data.success ) {
   				$("#team_table").html(data.view);
   				$(".clear").val("");
+          $("select#tee_hour").val("00");
+          $("select#tee_mins").val("00");
   			} else {
   				$(".error-message").show().delay(1500).fadeOut(500);
   			}
@@ -55,13 +59,32 @@ function updateTeam(el) {
 	team_id = $(el).siblings("input").attr("data-id");
 	score = $(el).siblings("input").val();
 	
-	$.post("/admin/update_amateur_score", {team_id:team_id,score:score}, function(data) {
+	$.post("/admin/update_team_score", {team_id:team_id,score:score}, function(data) {
 		if (data.success) {
 			$(".thank-message").show().delay(1500).fadeOut(500);
 		} else {
 			$(".error-message.score").show().delay(1500).fadeOut(500);
 		}	
 	});
+}
+
+function editTeam(id) {
+	if (confirm("Are you sure you want to update this team?")) {
+    var params = {
+      id: id,
+      tee_hour: $("select#tee_hour").val(),
+      tee_mins: $("select#tee_mins").val(),
+      pro_name: $("input#pro_name").val(),
+      amateur_1: $("input#amateur_1").val(),
+      amateur_2: $("input#amateur_2").val(),
+      amateur_3: $("input#amateur_3").val()
+    }
+		$.post("/admin/update_team", params, function(data) {
+			if (data.success) {
+        window.location.href = "/admin"
+			}
+		});
+	}
 }
 
 function deleteTeam(id) {

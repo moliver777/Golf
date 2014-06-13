@@ -44,7 +44,7 @@
 						<td class="tiny"><%= team["score"] %></td>
 						<td class="tiny"><%= team["score"]-@team_par %></td>
 					<% else %>
-						<td class="tiny">-</td>
+						<td class="tiny"><%= team["tee_time"].strftime("%H:%M") %></td>
 						<td><%= team["pro"]["name"] %></td>
 						<td><%= team["amateur_1"] %></td>
 						<td><%= team["amateur_2"] %></td>

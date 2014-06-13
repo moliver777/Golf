@@ -8,9 +8,11 @@ Golf::Application.routes.draw do
 	get "/admin" => "admin#index"
 	post "/admin/add_team"  => "admin#add_team"
   post "/admin/update_pro_score"  => "admin#update_pro_score"
-	post "/admin/update_amateur_score"  => "admin#update_amateur_score"
+	post "/admin/update_team_score"  => "admin#update_team_score"
 	post "/admin/delete_team"  => "admin#delete_team"
   get "/admin/add_image/:id" => "admin#add_image"
   post "/admin/add_image/:id" => "admin#save_image"
   post "/admin/delete_image" => "admin#delete_image"
+  get "/admin/edit/:id" => "admin#edit_team"
+  post "/admin/update_team" => "admin#update_team"
 end

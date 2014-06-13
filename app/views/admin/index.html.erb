@@ -50,6 +50,18 @@
 	<div class="CSSTableGenerator">
 		<table>
 			<tr id="new_team">
+				<td>
+					<select id="tee_hour">
+						<% 24.times do |h| %>
+							<option value="<%= "%02d" % h %>"><%= "%02d" % h %></option>
+						<% end %>
+					</select>:
+					<select id="tee_mins">
+						<% 60.times do |m| %>
+							<option value="<%= "%02d" % m %>"><%= "%02d" % m %></option>
+						<% end %>
+					</select>
+				</td>
 				<td><%= text_field_tag :pro, nil, {:placeholder => "Enter pro name here", :id => "pro", :class => "clear"} %></td>
 				<td><%= text_field_tag :amateur_1, nil, {:placeholder => "Enter amateur 1 here", :id => "amateur_1", :class => "clear"} %></td>
 				<td><%= text_field_tag :amateur_2, nil, {:placeholder => "Enter amateur 2 here", :id => "amateur_2", :class => "clear"} %></td>

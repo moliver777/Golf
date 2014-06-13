@@ -1,0 +1,65 @@
+<!-- Header -->
+<div id="header">
+	<div class="shell">
+		
+		<div id="head">
+			<h1><a href="#">Weybrook Park Pro-Am Admin</a></h1>
+		</div>
+		
+		<!-- Navigation -->
+		<div id="navigation">
+			<ul>
+			    <li><a href="/admin"><span>Team Management</span></a></li>
+			    <li><a href="/"><span>View Leaderboard</span></a></li>
+			</ul>
+		</div>
+		<!-- End Navigation -->
+		
+	</div>
+</div>
+<!-- End Header -->
+
+<!-- Content -->
+<div id="content" class="shell">
+	<h1 style="width:200px;float:left;padding-bottom:45px;">Edit Team</h1>
+	
+	<div class="CSSTableGenerator" >
+		<table>
+			<tr>
+				<td>Tee Time</td>
+				<td>Pro</td>
+				<td>Amateur 1</td>
+				<td>Amateur 2</td>
+				<td>Amateur 3</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>
+					<select id="tee_hour">
+						<% 24.times do |h| %>
+							<option value="<%= "%02d" % h %>"><%= "%02d" % h %></option>
+						<% end %>
+					</select>:
+					<select id="tee_mins">
+						<% 60.times do |m| %>
+							<option value="<%= "%02d" % m %>"><%= "%02d" % m %></option>
+						<% end %>
+					</select>
+				</td>
+				<td><%= text_field_tag :pro_name, @team.pro.name %></td>
+				<td><%= text_field_tag :amateur_1, @team.amateur_1 %></td>
+				<td><%= text_field_tag :amateur_2, @team.amateur_2 %></td>
+				<td><%= text_field_tag :amateur_3, @team.amateur_3 %></td>
+				<td><button onclick="editTeam('<%= @team.id %>')">Save changes</button></td>
+			</tr>
+		</table>
+	</div>
+</div>
+<!-- End Content -->
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("select#tee_hour").val("<%= "%02d" % @team.tee_time.hour %>");
+		$("select#tee_mins").val("<%= "%02d" % @team.tee_time.min %>");
+	});
+</script>

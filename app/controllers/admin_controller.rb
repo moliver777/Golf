@@ -18,7 +18,7 @@ class AdminController < ApplicationController
 		begin
       @pro = Pro.new(:name => params[:pro])
       @pro.save!
-			@team = Team.new(:pro_id => @pro.id, :amateur_1 => params[:amateur_1], :amateur_2 => params[:amateur_2], :amateur_3 => params[:amateur_3])
+			@team = Team.new(:pro_id => @pro.id, :amateur_1 => params[:amateur_1], :amateur_2 => params[:amateur_2], :amateur_3 => params[:amateur_3], :tee_time => "#{params[:tee_hour]}:#{params[:tee_mins]}:00")
 			@team.save!
       @teams = Team.includes(:pro).order("pros.name ASC")
 			render :json => {:success => true, :view => render_to_string(:partial => "team_table")}
@@ -40,7 +40,7 @@ class AdminController < ApplicationController
 		end
 	end
   
-	def update_amateur_score
+	def update_team_score
 		begin 
 			@team = Team.find(params[:team_id])
 			@team.score = params[:score]
@@ -53,6 +53,22 @@ class AdminController < ApplicationController
 		end
 	end
 	
+  def edit_team
+    @team = Team.find(params[:id])
+  end
+  
+  def update_team
+    team = Team.find(params[:id])
+    pro = team.pro
+    pro.update_attribute(:name, params[:pro_name])
+    team.update_attributes({amateur_1: params[:amateur_1], amateur_2: params[:amateur_2], amateur_3: params[:amateur_3], tee_time: "#{params[:tee_hour]}:#{params[:tee_mins]}:00"})
+    render :json => {:success => true}
+  rescue StandardError => e
+    puts e.message
+    puts e.backtrace
+    render :json => {:success => false}
+  end
+  
 	def delete_team
 		begin 
 			@team = Team.find(params[:id])

@@ -32,7 +32,7 @@
 						<td><%= pro.score %></td>
 						<td><%= pro.score-@pro_par %></td>
 					<% else %>
-						<td class="small">-</td>
+						<td class="small"><%= pro.team.tee_time.strftime("%H:%M") %></td>
 						<td class="big"><%= pro.name %></td>
 						<td>-</td>
 						<td>-</td>

@@ -5,18 +5,18 @@ class ApplicationController < ActionController::Base
   def index
     teams = Team.all.map{|team| expand_team(team)}
     teams.sort!{|a,b| a["score"]-b["score"]}
-    @teams = teams.select{|team| team["score"] != 0}+teams.select{|team| team["score"] == 0}.sort{|a,b| a["pro"]["name"] <=> b["pro"]["name"]}
+    @teams = teams.select{|team| team["score"] != 0}+teams.select{|team| team["score"] == 0}.sort{|a,b| a["tee_time"] - b["tee_time"]}
   end
   
   def get_teams
     teams = Team.all.map{|team| expand_team(team)}
     teams.sort!{|a,b| a["score"]-b["score"]}
-    @teams = teams.select{|team| team["score"] != 0}+teams.select{|team| team["score"] == 0}.sort{|a,b| a["pro"]["name"].downcase <=> b["pro"]["name"].downcase}
+    @teams = teams.select{|team| team["score"] != 0}+teams.select{|team| team["score"] == 0}.sort{|a,b| a["tee_time"] - b["tee_time"]}
     render :partial => "teams"
   end
   
   def get_pros
-    @pros = Pro.where("score > 0").order("score ASC, name ASC")+Pro.where("score = 0").order("name ASC")
+    @pros = Pro.where("score > 0").order("score ASC, name ASC")+Pro.where("score = 0").sort{|a,b| a.team["tee_time"] - b.team["tee_time"]}
     render :partial => "pros"
   end
 	
