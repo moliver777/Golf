@@ -8,9 +8,9 @@ class AdminController < ApplicationController
 		if params[:name]
 			@search = params[:name]
       @pros = Pro.where("name LIKE ?", "%#{params[:name]}%")
-			@teams = Team.includes(:pro).where("teams.amateur_1 LIKE ? OR teams.amateur_2 LIKE ? OR teams.amateur_3 LIKE ? OR teams.pro_id IN (?)", "%#{params[:name]}%", "%#{params[:name]}%", "%#{params[:name]}%", @pros.map{|pro| pro.id}).order("pros.name ASC")
+			@teams = Team.includes(:pro).where("teams.amateur_1 LIKE ? OR teams.amateur_2 LIKE ? OR teams.amateur_3 LIKE ? OR teams.pro_id IN (?)", "%#{params[:name]}%", "%#{params[:name]}%", "%#{params[:name]}%", @pros.map{|pro| pro.id}).order("teams.tee_time ASC")
 		else
-			@teams = Team.includes(:pro).order("pros.name ASC")
+			@teams = Team.order("tee_time ASC")
 		end
   end
 
@@ -20,7 +20,7 @@ class AdminController < ApplicationController
       @pro.save!
 			@team = Team.new(:pro_id => @pro.id, :amateur_1 => params[:amateur_1], :amateur_2 => params[:amateur_2], :amateur_3 => params[:amateur_3], :tee_time => "#{params[:tee_hour]}:#{params[:tee_mins]}:00")
 			@team.save!
-      @teams = Team.includes(:pro).order("pros.name ASC")
+      @teams = Team.order("tee_time ASC")
 			render :json => {:success => true, :view => render_to_string(:partial => "team_table")}
 		rescue StandardError => e
 			render :json => {:success => false}

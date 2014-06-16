@@ -34,7 +34,7 @@ table, th, td {
 }
 
 table, td {
-	border: 1px solid rgba(255,255,255,1);
+	border: 2px solid white;
 }
 
 th, td {
@@ -154,4 +154,12 @@ div#content table th.title {
 
 img.img_top {
   margin-top: 5px;
+}
+
+td.pro {
+  border-right: 8px solid white;
+}
+
+td.am {
+  border-left: 8px solid white;
 }
