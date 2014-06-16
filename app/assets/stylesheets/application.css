@@ -116,7 +116,7 @@ div#content table {
 div#content table#head {
   margin-bottom: 0;
   position: relative;
-  top: 1px;
+  top: 2px;
 }
 
 div#content table#body {
