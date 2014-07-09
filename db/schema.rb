@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140613151824) do
+ActiveRecord::Schema.define(:version => 20140709104743) do
 
   create_table "pros", :force => true do |t|
     t.string   "name",                      :null => false
@@ -38,6 +38,8 @@ ActiveRecord::Schema.define(:version => 20140613151824) do
     t.string   "amateur_3"
     t.integer  "pro_id"
     t.time     "tee_time",                         :default => '2000-01-01 00:00:00', :null => false
+    t.string   "amateur_4"
+    t.string   "name"
   end
 
 end
