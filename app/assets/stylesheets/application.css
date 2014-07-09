@@ -157,9 +157,14 @@ img.img_top {
 }
 
 td.pro {
+	font-size: 24px;
   border-right: 8px solid white;
 }
 
 td.am {
   border-left: 8px solid white;
+}
+
+td.am2 {
+	font-size: 16px;
 }

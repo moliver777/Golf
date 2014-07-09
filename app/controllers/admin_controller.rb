@@ -7,8 +7,7 @@ class AdminController < ApplicationController
 		@success = nil	
 		if params[:name]
 			@search = params[:name]
-      @pros = Pro.where("name LIKE ?", "%#{params[:name]}%")
-			@teams = Team.includes(:pro).where("teams.amateur_1 LIKE ? OR teams.amateur_2 LIKE ? OR teams.amateur_3 LIKE ? OR teams.pro_id IN (?)", "%#{params[:name]}%", "%#{params[:name]}%", "%#{params[:name]}%", @pros.map{|pro| pro.id}).order("teams.tee_time ASC")
+			@teams = Team.where("name LIKE ? OR amateur_1 LIKE ? OR amateur_2 LIKE ? OR amateur_3 LIKE ? OR amateur_4 LIKE ?", "%#{params[:name]}%", "%#{params[:name]}%", "%#{params[:name]}%", "%#{params[:name]}%", "%#{params[:name]}%").order("tee_time ASC")
 		else
 			@teams = Team.order("tee_time ASC")
 		end
@@ -16,9 +15,7 @@ class AdminController < ApplicationController
 
 	def add_team
 		begin
-      @pro = Pro.new(:name => params[:pro])
-      @pro.save!
-			@team = Team.new(:pro_id => @pro.id, :amateur_1 => params[:amateur_1], :amateur_2 => params[:amateur_2], :amateur_3 => params[:amateur_3], :tee_time => "#{params[:tee_hour]}:#{params[:tee_mins]}:00")
+			@team = Team.new(:name => params[:name], :amateur_1 => params[:amateur_1], :amateur_2 => params[:amateur_2], :amateur_3 => params[:amateur_3], :amateur_4 => params[:amateur_4], :tee_time => "#{params[:tee_hour]}:#{params[:tee_mins]}:00")
 			@team.save!
       @teams = Team.order("tee_time ASC")
 			render :json => {:success => true, :view => render_to_string(:partial => "team_table")}
@@ -59,9 +56,7 @@ class AdminController < ApplicationController
   
   def update_team
     team = Team.find(params[:id])
-    pro = team.pro
-    pro.update_attribute(:name, params[:pro_name])
-    team.update_attributes({amateur_1: params[:amateur_1], amateur_2: params[:amateur_2], amateur_3: params[:amateur_3], tee_time: "#{params[:tee_hour]}:#{params[:tee_mins]}:00"})
+    team.update_attributes({name: params[:name], amateur_1: params[:amateur_1], amateur_2: params[:amateur_2], amateur_3: params[:amateur_3], amateur_4: params[:amateur_4], tee_time: "#{params[:tee_hour]}:#{params[:tee_mins]}:00"})
     render :json => {:success => true}
   rescue StandardError => e
     puts e.message
@@ -72,9 +67,7 @@ class AdminController < ApplicationController
 	def delete_team
 		begin 
 			@team = Team.find(params[:id])
-      @pro = @team.pro
 			@id = @team.id
-      @pro.destroy
 			@team.destroy
 			render :json => {:success => true, :team_id => @id}
 		rescue StandardError => e

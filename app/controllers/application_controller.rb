@@ -4,13 +4,13 @@ class ApplicationController < ActionController::Base
   
   def index
     teams = Team.all.map{|team| expand_team(team)}
-    teams.sort!{|a,b| a["score"]-b["score"]}
+    teams.sort!{|a,b| b["score"]-a["score"]}
     @teams = teams.select{|team| team["score"] != 0}+teams.select{|team| team["score"] == 0}.sort{|a,b| a["tee_time"] - b["tee_time"]}
   end
   
   def get_teams
     teams = Team.all.map{|team| expand_team(team)}
-    teams.sort!{|a,b| a["score"]-b["score"]}
+    teams.sort!{|a,b| b["score"]-a["score"]}
     @teams = teams.select{|team| team["score"] != 0}+teams.select{|team| team["score"] == 0}.sort{|a,b| a["tee_time"] - b["tee_time"]}
     render :partial => "teams"
   end
@@ -37,9 +37,7 @@ class ApplicationController < ActionController::Base
   end
   
   def expand_team team
-    pro = team.pro
     xteam = team.attributes
-    xteam["pro"] = pro.attributes
     xteam
   end
 end

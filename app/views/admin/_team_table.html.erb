@@ -1,12 +1,12 @@
 <tr>
 	<td></td>
 	<td>Tee Time</td>
-	<td>Pro</td>
-	<td>Pro-Score</td>
-	<td>Amateur 1</td>
-	<td>Amateur 2</td>
-	<td>Amateur 3</td>
-	<td>Team-Score</td>
+	<td>Name</td>
+	<td>Player 1</td>
+	<td>Player 2</td>
+	<td>Player 3</td>
+	<td>Player 4</td>
+	<td>Score</td>
 	<td></td>
 </tr>
 <% @teams.each do |team| %>
@@ -17,11 +17,11 @@
 			<td style="width:150px"><a href="/admin/add_image/<%= team.id %>">Click to add image</a></td>
 		<% end %>
 		<td><%= team.tee_time.strftime("%H:%M") %></td>
-		<td><%= team.pro.name %></td>
-		<td><input type="text" data-id="<%= team.pro.id %>" value="<%= team.pro.score %>"><br/><a class='update_pro' onclick="updatePro(this)">Update Score</a></td>
+		<td><%= team.name %></td>
 		<td><%= team.amateur_1 %></td>
 		<td><%= team.amateur_2 %></td>
 		<td><%= team.amateur_3 %></td>
+		<td><%= team.amateur_4 %></td>
 		<td><input type="text" data-id="<%= team.id %>" value="<%= team.score %>"><br/><a class='update_team' onclick="updateTeam(this)">Update Score</a></td>
 		<td><a href="/admin/edit/<%= team.id %>">Edit</a>&nbsp;&nbsp;<a onclick="deleteTeam('<%= team.id %>')">Delete</a></td>
 	</tr>

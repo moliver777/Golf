@@ -27,10 +27,11 @@
 		<table>
 			<tr>
 				<td>Tee Time</td>
-				<td>Pro</td>
-				<td>Amateur 1</td>
-				<td>Amateur 2</td>
-				<td>Amateur 3</td>
+				<td>Name</td>
+				<td>Player 1</td>
+				<td>Player 2</td>
+				<td>Player 3</td>
+				<td>Player 4</td>
 				<td></td>
 			</tr>
 			<tr>
@@ -46,10 +47,11 @@
 						<% end %>
 					</select>
 				</td>
-				<td><%= text_field_tag :pro_name, @team.pro.name %></td>
+				<td><%= text_field_tag :name, @team.name %></td>
 				<td><%= text_field_tag :amateur_1, @team.amateur_1 %></td>
 				<td><%= text_field_tag :amateur_2, @team.amateur_2 %></td>
 				<td><%= text_field_tag :amateur_3, @team.amateur_3 %></td>
+				<td><%= text_field_tag :amateur_4, @team.amateur_4 %></td>
 				<td><button onclick="editTeam('<%= @team.id %>')">Save changes</button></td>
 			</tr>
 		</table>

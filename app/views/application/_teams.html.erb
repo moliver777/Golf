@@ -1,17 +1,17 @@
 <table id="head">
 	<thead>
 		<tr>
-			<th class="title" colspan="8">TEAM LEADERBOARD</th>
+			<th class="title" colspan="8">LEADERBOARD</th>
 		</tr>
 		<tr>
 			<th class="image"><div>&nbsp;</div></th>
 			<th class="tiny"></th>
-			<th>Professional</th>
-			<th>Amateur 1</th>
-			<th>Amateur 2</th>
-			<th>Amateur 3</th>
+			<th>Name</th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th></th>
 			<th class="tiny">Score</th>
-			<th class="tiny">+/- <span style="font-size:14px;position:relative;bottom:2px;">(<%= @team_par %>)</span></th>
 		</tr>
 	</thead>
 </table>
@@ -37,19 +37,19 @@
 							<% @prev_score = team["score"] %>
 							<% @prev_position = i+1 %>
 						<% end %>
-						<td class="pro"><%= team["pro"]["name"] %></td>
-						<td class="am"><%= team["amateur_1"] %></td>
-						<td><%= team["amateur_2"] %></td>
-						<td><%= team["amateur_3"] %></td>
+						<td class="pro"><%= team["name"] %></td>
+						<td class="am am2"><%= team["amateur_1"] %></td>
+						<td class="am2"><%= team["amateur_2"] %></td>
+						<td class="am2"><%= team["amateur_3"] %></td>
+						<td class="am2"><%= team["amateur_4"] %></td>
 						<td class="tiny"><%= team["score"] %></td>
-						<td class="tiny"><%= "+" if team['score']-@team_par > 0 %><%= team["score"]-@team_par %></td>
 					<% else %>
 						<td class="tiny"><%= team["tee_time"].strftime("%H:%M") %></td>
-						<td class="pro"><%= team["pro"]["name"] %></td>
-						<td class="am"><%= team["amateur_1"] %></td>
-						<td><%= team["amateur_2"] %></td>
-						<td><%= team["amateur_3"] %></td>
-						<td class="tiny">-</td>
+						<td class="pro"><%= team["name"] %></td>
+						<td class="am am2"><%= team["amateur_1"] %></td>
+						<td class="am2"><%= team["amateur_2"] %></td>
+						<td class="am2"><%= team["amateur_3"] %></td>
+						<td class="am2"><%= team["amateur_4"] %></td>
 						<td class="tiny">-</td>
 					<% end %>
 				</tr>
@@ -60,9 +60,9 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		clearTimeout(window.pro1);
-		clearTimeout(window.pro2);
-		$("#scroll").css("height", Math.max($(window).height()-($("table#head").height()+212), 284)+"px");
+		clearTimeout(window.team1);
+		clearTimeout(window.team2);
+		$("#scroll").css("height", Math.max($(window).height()-($("table#head").height()+214), 284)+"px");
 		$("#scroll").scrollTop($("#scroll").prop("scrollHeight"));
 		var max_scroll = $("#scroll").scrollTop();
 		$("#scroll").scrollTop(0);
@@ -74,7 +74,7 @@
 				window.team2 = setTimeout(function() {
 					clearInterval(window.team2);
 					$("div#content table").fadeOut("fast", function() {
-						$.get("/get_pros", function(response) {
+						$.get("/get_teams", function(response) {
 							$("div#content").html(response);
 						});
 					});
