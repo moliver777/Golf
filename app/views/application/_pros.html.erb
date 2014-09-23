@@ -1,13 +1,12 @@
 <table id="head">
 	<thead>
 		<tr>
-			<th class="title" colspan="4">PROFESSIONAL LEADERBOARD</th>
+			<th class="title" colspan="3">INDIVIDUAL TOP 15</th>
 		</tr>
 		<tr>
 			<th class="small"></th>
 			<th class="big">Name</th>
 			<th>Score</th>
-			<th>+/- <span style="font-size:14px;position:relative;bottom:2px;">(<%= @pro_par %>)</span></th>
 		</tr>
 	</thead>
 </table>
@@ -16,27 +15,19 @@
 		<tbody>
 			<% @pros.each_with_index do |pro,i| %>
 				<tr>
-					<% if pro.score > 0 %>
-						<% if pro.score == @prev_score %>
-							<td class="small">T<%= @prev_position %></td>
-						<% else %>
-							<% if @pros[i+1] && pro.score == @pros[i+1].score %>
-								<td class="small">T<%= i+1 %></td>
-							<% else %>
-								<td class="small"><%= i+1 %></td>
-							<% end %>
-							<% @prev_score = pro.score %>
-							<% @prev_position = i+1 %>
-						<% end %>
-						<td class="big"><%= pro.name %></td>
-						<td><%= pro.score %></td>
-						<td><%= "+" if pro.score-@pro_par > 0 %><%= pro.score-@pro_par %></td>
+					<% if pro.score == @prev_score %>
+						<td class="small">T<%= @prev_position %></td>
 					<% else %>
-						<td class="small"><%= pro.team.tee_time.strftime("%H:%M") %></td>
-						<td class="big"><%= pro.name %></td>
-						<td>-</td>
-						<td>-</td>
+						<% if @pros[i+1] && pro.score == @pros[i+1].score %>
+							<td class="small">T<%= i+1 %></td>
+						<% else %>
+							<td class="small"><%= i+1 %></td>
+						<% end %>
+						<% @prev_score = pro.score %>
+						<% @prev_position = i+1 %>
 					<% end %>
+					<td class="big"><%= pro.name %></td>
+					<td><%= pro.score %></td>
 				</tr>
 			<% end %>
 		</tbody>
@@ -58,7 +49,8 @@
 			}, <%= 1250*@pros.count %>, "linear", function() {
 				window.pro2 = setTimeout(function() {
 					clearTimeout(window.pro2);
-					$("div#content table").fadeOut("fast", function() {
+					$("div#content table#head").fadeOut("fast");
+					$("div#content table#body").fadeOut("fast", function() {
 						$.get("/get_teams", function(response) {
 							$("div#content").html(response);
 						});

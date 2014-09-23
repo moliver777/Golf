@@ -7,7 +7,9 @@ class AdminController < ApplicationController
 		@success = nil	
 		if params[:name]
 			@search = params[:name]
-			@teams = Team.where("name LIKE ? OR amateur_1 LIKE ? OR amateur_2 LIKE ? OR amateur_3 LIKE ? OR amateur_4 LIKE ?", "%#{params[:name]}%", "%#{params[:name]}%", "%#{params[:name]}%", "%#{params[:name]}%", "%#{params[:name]}%").order("tee_time ASC")
+			ids = Team.where("name LIKE ?", "%#{params[:name]}%").map{|team| team.id}
+			ids += Pro.where("name LIKE ?", "%#{params[:name]}%").map{|pro| pro.team.id}
+			@teams = Team.where(:id => ids).order("tee_time ASC")
 		else
 			@teams = Team.order("tee_time ASC")
 		end
@@ -15,8 +17,15 @@ class AdminController < ApplicationController
 
 	def add_team
 		begin
-			@team = Team.new(:name => params[:name], :amateur_1 => params[:amateur_1], :amateur_2 => params[:amateur_2], :amateur_3 => params[:amateur_3], :amateur_4 => params[:amateur_4], :tee_time => "#{params[:tee_hour]}:#{params[:tee_mins]}:00")
-			@team.save!
+			team = Team.create(:name => params[:name], :tee_time => "#{params[:tee_hour]}:#{params[:tee_mins]}:00")
+			pro1 = Pro.create(:name => params[:pro1])
+			pro2 = Pro.create(:name => params[:pro2])
+			pro3 = Pro.create(:name => params[:pro3])
+			pro4 = Pro.create(:name => params[:pro4])
+			TeamProMapping.create(:team_id => team.id, :pro_id => pro1.id)
+			TeamProMapping.create(:team_id => team.id, :pro_id => pro2.id)
+			TeamProMapping.create(:team_id => team.id, :pro_id => pro3.id)
+			TeamProMapping.create(:team_id => team.id, :pro_id => pro4.id)
       @teams = Team.order("tee_time ASC")
 			render :json => {:success => true, :view => render_to_string(:partial => "team_table")}
 		rescue StandardError => e
@@ -29,20 +38,7 @@ class AdminController < ApplicationController
 			@pro = Pro.find(params[:pro_id])
 			@pro.score = params[:score]
 			@pro.save!
-			render :json => {:success => true}
-		rescue StandardError => e
-			puts e.message
-			puts e.backtrace
-			render :json => {:success => false}
-		end
-	end
-  
-	def update_team_score
-		begin 
-			@team = Team.find(params[:team_id])
-			@team.score = params[:score]
-			@team.save!
-			render :json => {:success => true}
+			render :json => {:success => true, :score => @pro.team.score}
 		rescue StandardError => e
 			puts e.message
 			puts e.backtrace
@@ -56,7 +52,10 @@ class AdminController < ApplicationController
   
   def update_team
     team = Team.find(params[:id])
-    team.update_attributes({name: params[:name], amateur_1: params[:amateur_1], amateur_2: params[:amateur_2], amateur_3: params[:amateur_3], amateur_4: params[:amateur_4], tee_time: "#{params[:tee_hour]}:#{params[:tee_mins]}:00"})
+    team.update_attributes({:name => params[:name], :tee_time => "#{params[:tee_hour]}:#{params[:tee_mins]}:00"})
+		team.pros.each_with_index do |pro,i|
+			pro.update_attributes({:name => params["pro#{i+1}"]})
+		end
     render :json => {:success => true}
   rescue StandardError => e
     puts e.message
@@ -67,6 +66,10 @@ class AdminController < ApplicationController
 	def delete_team
 		begin 
 			@team = Team.find(params[:id])
+			@mappings = @team.team_pro_mappings
+			@pros = Pro.where(:id => @mappings.map{|mapping| mapping.pro_id})
+			@mappings.destroy_all
+			@pros.destroy_all
 			@id = @team.id
 			@team.destroy
 			render :json => {:success => true, :team_id => @id}

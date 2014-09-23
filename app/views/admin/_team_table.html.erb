@@ -6,11 +6,11 @@
 	<td>Player 2</td>
 	<td>Player 3</td>
 	<td>Player 4</td>
-	<td>Score</td>
+	<td>Team Score</td>
 	<td></td>
 </tr>
 <% @teams.each do |team| %>
-	<tr id="team_<%= team.id %>">
+	<tr id="team_<%= team.id %>" class="team_row">
 		<% if team.image %>
 			<td style="width:150px"><img src="/get_image?id=<%= team.id %>" height='60px' width='90px' onclick="window.location.href='/admin/add_image/<%= team.id %>'" style="cursor:pointer;" /></td>
 		<% else %>
@@ -18,11 +18,51 @@
 		<% end %>
 		<td><%= team.tee_time.strftime("%H:%M") %></td>
 		<td><%= team.name %></td>
-		<td><%= team.amateur_1 %></td>
-		<td><%= team.amateur_2 %></td>
-		<td><%= team.amateur_3 %></td>
-		<td><%= team.amateur_4 %></td>
-		<td><input type="text" data-id="<%= team.id %>" value="<%= team.score %>"><br/><a class='update_team' onclick="updateTeam(this)">Update Score</a></td>
+		<td>
+			<% if team.pros[0] %>
+				<%= team.pros[0].name %>
+				<br/>
+				<input type="text" data-id="<%= team.pros[0].id %>" class="pro_score" value="<%= team.pros[0].score %>" />
+			<% else %>
+				-<br/>&nbsp;
+			<% end %>
+		</td>
+		<td>
+			<% if team.pros[1] %>
+				<%= team.pros[1].name %>
+				<br/>
+				<input type="text" data-id="<%= team.pros[1].id %>" class="pro_score" value="<%= team.pros[1].score %>" />
+			<% else %>
+				-<br/>&nbsp;
+			<% end %>
+		</td>
+		<td>
+			<% if team.pros[2] %>
+				<%= team.pros[2].name %>
+				<br/>
+				<input type="text" data-id="<%= team.pros[2].id %>" class="pro_score" value="<%= team.pros[2].score %>" />
+			<% else %>
+				-<br/>&nbsp;
+			<% end %>
+		</td>
+		<td>
+			<% if team.pros[3] %>
+				<%= team.pros[3].name %>
+				<br/>
+				<input type="text" data-id="<%= team.pros[3].id %>" class="pro_score" value="<%= team.pros[3].score %>" />
+			<% else %>
+				-<br/>&nbsp;
+			<% end %>
+		</td>
+		<td class="team_score"><%= team.score.blank? ? "-" : team.score %></td>
 		<td><a href="/admin/edit/<%= team.id %>">Edit</a>&nbsp;&nbsp;<a onclick="deleteTeam('<%= team.id %>')">Delete</a></td>
 	</tr>
 <% end %>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("input.pro_score").unbind("blur").blur(function() {
+			updatePro(this);
+		});
+	});
+</script>

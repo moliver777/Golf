@@ -1,7 +1,7 @@
 <table id="head">
 	<thead>
 		<tr>
-			<th class="title" colspan="8">LEADERBOARD</th>
+			<th class="title" colspan="8">TEAM LEADERBOARD</th>
 		</tr>
 		<tr>
 			<th class="image"><div>&nbsp;</div></th>
@@ -23,7 +23,7 @@
 					<% if team["image"] %>
 						<td class="image"><div><img src="/get_image?id=<%= team["id"] %>" height='60px' width='90px' class="img_top" /></div></td>
 					<% else %>
-						<td class="image"><div><img src="/assets/wpgc.png" height='60px' width='90px' class="img_top" /></div></td>
+						<td class="image"><div><img src="/assets/default.png" height='60px' width='75px' class="img_top" /></div></td>
 					<% end %>
 					<% if team["score"] > 0 %>
 						<% if team["score"] == @prev_score %>
@@ -38,18 +38,18 @@
 							<% @prev_position = i+1 %>
 						<% end %>
 						<td class="pro"><%= team["name"] %></td>
-						<td class="am am2"><%= team["amateur_1"] %></td>
-						<td class="am2"><%= team["amateur_2"] %></td>
-						<td class="am2"><%= team["amateur_3"] %></td>
-						<td class="am2"><%= team["amateur_4"] %></td>
+						<td class="am am2"><%= team["pro1"] %></td>
+						<td class="am2"><%= team["pro2"] %></td>
+						<td class="am2"><%= team["pro3"] %></td>
+						<td class="am2"><%= team["pro4"] %></td>
 						<td class="tiny"><%= team["score"] %></td>
 					<% else %>
 						<td class="tiny"><%= team["tee_time"].strftime("%H:%M") %></td>
 						<td class="pro"><%= team["name"] %></td>
-						<td class="am am2"><%= team["amateur_1"] %></td>
-						<td class="am2"><%= team["amateur_2"] %></td>
-						<td class="am2"><%= team["amateur_3"] %></td>
-						<td class="am2"><%= team["amateur_4"] %></td>
+						<td class="am am2"><%= team["pro1"] %></td>
+						<td class="am2"><%= team["pro2"] %></td>
+						<td class="am2"><%= team["pro3"] %></td>
+						<td class="am2"><%= team["pro4"] %></td>
 						<td class="tiny">-</td>
 					<% end %>
 				</tr>
@@ -73,8 +73,9 @@
 			}, <%= 2500*@teams.count %>, "linear", function() {
 				window.team2 = setTimeout(function() {
 					clearInterval(window.team2);
-					$("div#content table").fadeOut("fast", function() {
-						$.get("/get_teams", function(response) {
+					$("div#content table#head").fadeOut("fast");
+					$("div#content table#body").fadeOut("fast", function() {
+						$.get("/get_pros", function(response) {
 							$("div#content").html(response);
 						});
 					});

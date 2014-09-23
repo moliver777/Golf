@@ -11,8 +11,8 @@
 
 $(document).ready(function() {
 	$("#team_search_btn").click(function() {
-		pro_name = $("#team_search").val();
-		window.location.href = "/admin?name="+pro_name;
+		search = $("#team_search").val();
+		window.location.href = "/admin?name="+search;
 	});
   
 	$("#team_clear_btn").click(function() {
@@ -22,13 +22,13 @@ $(document).ready(function() {
 
 	$("#add_team").click(function() {
 		name = $("#name").val();
-    amateur_1 = $("#amateur_1").val();
-    amateur_2 = $("#amateur_2").val();
-    amateur_3 = $("#amateur_3").val();
-		amateur_4 = $("#amateur_4").val();
+    pro1 = $("#pro1").val();
+    pro2 = $("#pro2").val();
+    pro3 = $("#pro3").val();
+		pro4 = $("#pro4").val();
     tee_hour = $("select#tee_hour").val();
     tee_mins = $("select#tee_mins").val();
-		$.post("/admin/add_team", {name:name,amateur_1:amateur_1,amateur_2:amateur_2,amateur_3:amateur_3,amateur_4:amateur_4,tee_hour:tee_hour,tee_mins:tee_mins}, function(data) {
+		$.post("/admin/add_team", {name:name,pro1:pro1,pro2:pro2,pro3:pro3,pro4:pro4,tee_hour:tee_hour,tee_mins:tee_mins}, function(data) {
 			if ( data.success ) {
 				$("#team_table").html(data.view);
 				$(".clear").val("");
@@ -42,28 +42,16 @@ $(document).ready(function() {
 });
 
 function updatePro(el) {
-	pro_id = $(el).siblings("input").attr("data-id");
-	score = $(el).siblings("input").val();
+	pro_id = $(el).attr("data-id");
+	score = $(el).val();
 	
 	$.post("/admin/update_pro_score", {pro_id:pro_id,score:score}, function(data) {
 		if (data.success) {
 			$(".thank-message").show().delay(1500).fadeOut(500);
+      $(el).parents(".team_row").find(".team_score").html(data.score);
 		} else {
 			$(".error-message.score").show().delay(1500).fadeOut(500);
 		}
-	});
-}
-
-function updateTeam(el) {
-	team_id = $(el).siblings("input").attr("data-id");
-	score = $(el).siblings("input").val();
-	
-	$.post("/admin/update_team_score", {team_id:team_id,score:score}, function(data) {
-		if (data.success) {
-			$(".thank-message").show().delay(1500).fadeOut(500);
-		} else {
-			$(".error-message.score").show().delay(1500).fadeOut(500);
-		}	
 	});
 }
 
@@ -74,10 +62,10 @@ function editTeam(id) {
       tee_hour: $("select#tee_hour").val(),
       tee_mins: $("select#tee_mins").val(),
       name: $("input#name").val(),
-      amateur_1: $("input#amateur_1").val(),
-      amateur_2: $("input#amateur_2").val(),
-      amateur_3: $("input#amateur_3").val(),
-			amateur_4: $("input#amateur_4").val()
+      pro1: $("input#pro1").val(),
+      pro2: $("input#pro2").val(),
+      pro3: $("input#pro3").val(),
+			pro4: $("input#pro4").val()
     }
 		$.post("/admin/update_team", params, function(data) {
 			if (data.success) {

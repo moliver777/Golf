@@ -100,6 +100,16 @@ div#header {
   height: 200px;
 }
 
+div#header div#logo {
+  background-image: url(/assets/logo.png);
+	background-size: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+	width: 380px;
+  height: 200px;
+	margin-left: 100px;
+}
+
 div#content div#scroll {
   overflow: hidden;
 }

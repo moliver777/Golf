@@ -48,10 +48,10 @@
 					</select>
 				</td>
 				<td><%= text_field_tag :name, @team.name %></td>
-				<td><%= text_field_tag :amateur_1, @team.amateur_1 %></td>
-				<td><%= text_field_tag :amateur_2, @team.amateur_2 %></td>
-				<td><%= text_field_tag :amateur_3, @team.amateur_3 %></td>
-				<td><%= text_field_tag :amateur_4, @team.amateur_4 %></td>
+				<td><%= text_field_tag :pro1, @team.pros[0].name rescue nil %></td>
+				<td><%= text_field_tag :pro2, @team.pros[1].name rescue nil %></td>
+				<td><%= text_field_tag :pro3, @team.pros[2].name rescue nil %></td>
+				<td><%= text_field_tag :pro4, @team.pros[3].name rescue nil %></td>
 				<td><button onclick="editTeam('<%= @team.id %>')">Save changes</button></td>
 			</tr>
 		</table>

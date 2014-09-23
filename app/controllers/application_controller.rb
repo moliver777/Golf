@@ -16,8 +16,15 @@ class ApplicationController < ActionController::Base
   end
   
   def get_pros
-    @pros = Pro.where("score > 0").order("score ASC, name ASC")+Pro.where("score = 0").sort{|a,b| a.team["tee_time"] - b.team["tee_time"]}
-    render :partial => "pros"
+    @pros = Pro.where("score > 0").order("score DESC, name ASC").limit(15)
+		if @pros.first
+    	render :partial => "pros"
+		else
+	    teams = Team.all.map{|team| expand_team(team)}
+	    teams.sort!{|a,b| b["score"]-a["score"]}
+	    @teams = teams.select{|team| team["score"] != 0}+teams.select{|team| team["score"] == 0}.sort{|a,b| a["tee_time"] - b["tee_time"]}
+	    render :partial => "teams"
+		end
   end
 	
   def get_image
@@ -38,6 +45,11 @@ class ApplicationController < ActionController::Base
   
   def expand_team team
     xteam = team.attributes
+		xteam["score"] = team.score
+		xteam["pro1"] = team.pros[0].name rescue nil
+		xteam["pro2"] = team.pros[1].name rescue nil
+		xteam["pro3"] = team.pros[2].name rescue nil
+		xteam["pro4"] = team.pros[3].name rescue nil
     xteam
   end
 end

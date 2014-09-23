@@ -8,7 +8,6 @@ class AddInitialTables < ActiveRecord::Migration
     
     create_table :teams do |t|
       t.string :name, :null => false
-      t.integer :score, :null => false, :default => 0
       t.timestamps
     end
     
