@@ -45,7 +45,6 @@ class ApplicationController < ActionController::Base
   
   def expand_team team
     xteam = team.attributes
-		xteam["score"] = team.score
 		xteam["pro1"] = team.pros[0].name rescue nil
 		xteam["pro2"] = team.pros[1].name rescue nil
 		xteam["pro3"] = team.pros[2].name rescue nil

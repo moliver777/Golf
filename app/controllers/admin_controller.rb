@@ -38,7 +38,7 @@ class AdminController < ApplicationController
 			@pro = Pro.find(params[:pro_id])
 			@pro.score = params[:score]
 			@pro.save!
-			render :json => {:success => true, :score => @pro.team.score}
+			render :json => {:success => true}
 		rescue StandardError => e
 			puts e.message
 			puts e.backtrace
@@ -46,6 +46,19 @@ class AdminController < ApplicationController
 		end
 	end
 	
+	def update_team_score
+		begin 
+			@team = Team.find(params[:team_id])
+			@team.score = params[:score]
+			@team.save!
+			render :json => {:success => true}
+		rescue StandardError => e
+			puts e.message
+			puts e.backtrace
+			render :json => {:success => false}
+		end
+	end
+  
   def edit_team
     @team = Team.find(params[:id])
   end

@@ -55,6 +55,19 @@ function updatePro(el) {
 	});
 }
 
+function updateTeam(el) {
+	team_id = $(el).attr("data-id");
+	score = $(el).val();
+	
+	$.post("/admin/update_team_score", {team_id:team_id,score:score}, function(data) {
+		if (data.success) {
+			$(".thank-message").show().delay(1500).fadeOut(500);
+		} else {
+			$(".error-message.score").show().delay(1500).fadeOut(500);
+		}
+	});
+}
+
 function editTeam(id) {
 	if (confirm("Are you sure you want to update this team?")) {
     var params = {

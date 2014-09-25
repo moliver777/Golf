@@ -54,7 +54,9 @@
 				-<br/>&nbsp;
 			<% end %>
 		</td>
-		<td class="team_score"><%= team.score.blank? ? "-" : team.score %></td>
+		<td class="team_score">
+			<input type="text" data-id="<%= team.id %>" class="team_score" value="<%= team.score %>" />
+		</td>
 		<td><a href="/admin/edit/<%= team.id %>">Edit</a>&nbsp;&nbsp;<a onclick="deleteTeam('<%= team.id %>')">Delete</a></td>
 	</tr>
 <% end %>
@@ -63,6 +65,10 @@
 	$(document).ready(function() {
 		$("input.pro_score").unbind("blur").blur(function() {
 			updatePro(this);
+		});
+		
+		$("input.team_score").unbind("blur").blur(function() {
+			updateTeam(this);
 		});
 	});
 </script>
