@@ -75,7 +75,7 @@
 					clearInterval(window.team2);
 					$("div#content table#head").fadeOut("fast");
 					$("div#content table#body").fadeOut("fast", function() {
-						$.get("/get_pros", function(response) {
+						$.get("/get_teams", function(response) {
 							$("div#content").html(response);
 						});
 					});
